@@ -1,5 +1,10 @@
 import os, csv, json, argparse  
     
+def read_csv(file:str)->list:
+    ''' Lee un archivo CSV y lo convierte en una lista de diccionarios '''
+    with open(file, "r", encoding='utf8') as f:
+        return [x for x in csv.DictReader(f)]
+
 def check_dir(dir_path:str) -> bool:
     if not os.path.exists(dir_path):
         print(f"No existe el directorio '{dir_path}'.")
