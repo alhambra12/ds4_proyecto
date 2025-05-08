@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Journal Database - {{ option }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    {% if option_type == 'areas' %}
+        <h1 class="mb-4">Revistas en el área: <strong>{{ option }}</strong></h1>
+    {% else %}
+        <h1 class="mb-4">Revistas en el catálogo: <strong>{{ option }}</strong></h1>
+    {% endif %}
+
+
+    {% if journals %}
+    <ul class="list-group">
+        {% for journal in journals %}
+        <li class="list-group-item">
+            <h5 class="mb-1">
+                <a href="/revista/{{ journal.id }}" class="text-decoration-none text-primary">
+                    {{ journal.title }}
+                </a>
+            </h5>
+            {% if journal.h_index %}
+            <p class="mb-0"><strong>H-index:</strong> {{ journal.h_index }}</p>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="alert alert-warning">No se encontraron revistas.</div>
+    {% endif %}
+</div>
+
+{% endblock %}
