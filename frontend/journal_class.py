@@ -1,3 +1,5 @@
+''' Clase Journal '''
+
 class Journal:
     ''' Constructor de la clase Journal '''
     def __init__(self, id, title, areas, catalogs, website, h_index, subjet_area_and_category, publisher, issn, widget, publication_type):
@@ -29,3 +31,7 @@ class Journal:
             'widget': self.widget,
             'publication_type': self.publication_type
         }
+    
+    def __str__(self):
+        ''' Método para imprimir el objeto Journal '''
+        return self.title
