@@ -1,9 +1,11 @@
 import os, csv, json, argparse  
     
-def read_csv(file:str)->list:
-    ''' Lee un archivo CSV y lo convierte en una lista de diccionarios '''
-    with open(file, "r", encoding='utf8') as f:
-        return [x for x in csv.DictReader(f)]
+def get_titles(archivo: str) -> list:
+    ''' Lee un archivo CSV y devuelve una lista de titulos '''
+    with open(archivo, "r", encoding='utf8') as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        return [row[0].strip() for row in reader if row and row[0].strip()]
 
 def check_dir(dir_path:str) -> bool:
     if not os.path.exists(dir_path):
