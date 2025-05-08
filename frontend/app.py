@@ -1,7 +1,7 @@
 '''  Programa frontend de revistas '''
 
 import os, argparse
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -14,6 +14,10 @@ args = parser.parse_args()
 dir_json = args.dir_json or os.path.join(os.path.dirname(__file__), '..', 'datos', 'json')
 unison_json = args.unison_json or 'revistas_unison_test.json'
 scimago_json = args.scimago_json or 'revistas_scimagojr_test.json'
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
