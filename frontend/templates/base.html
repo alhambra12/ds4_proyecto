@@ -8,12 +8,12 @@
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
           crossorigin="anonymous">
 
-    <link rel="stylesheet" href='static/css/styles.css'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
     {% block head %}
         <title>{% block title %}Journal Database{% endblock %}</title>
     {% endblock %}
-    
+
 </head>
 <body class="d-flex flex-column h-100">
 
@@ -50,7 +50,7 @@
                 
                 <div class="d-flex">
                     <a href="https://www.unison.mx" target="_blank" class="navbar-brand">
-                        <img src="static/images/unison_bw_wordmark.png" alt="Unison wordmark" height="40" class="inverted-color">
+                        <img src="{{ url_for('static', filename='images/unison_bw_wordmark.png') }}" alt="Unison wordmark" height="40" class="inverted-color">
                     </a>
                 </div>
             </div>
