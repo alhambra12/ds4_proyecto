@@ -21,7 +21,7 @@ def main(csv_dir_path:str, output_path:str):
     dir_areas = os.path.join(csv_dir_path, 'areas')
     dir_catalogs = os.path.join(csv_dir_path, 'catalogos')
 
-    # verifica si existen los directorios y contienen csv.
+    # verificar si existen los directorios y contienen csv.
     print('\nVerificando directorio de areas:')
     if not check_dir(dir_areas):
         print("\nPrograma finalizado.\n")
@@ -30,6 +30,16 @@ def main(csv_dir_path:str, output_path:str):
     if not check_dir(dir_catalogs):
         print("\nPrograma finalizado.\n")
         return
+
+    # verificar si no existe el archivo de salida
+    if os.path.exists(output_path):
+        response = input(f"\nEl archivo de salida en '{output_path}' ya existe. ¿Desea eliminarlo? (s/n): ").strip().lower()
+        if response == 's':
+            os.remove(output_path)
+            print(f"\nArchivo en '{output_path}' eliminado.")
+        else:    
+            print('\nPrograma finalizado.\n')
+            return
 
 if __name__ == '__main__':
 
