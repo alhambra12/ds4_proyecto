@@ -15,3 +15,10 @@ if __name__ == '__main__':
     output_path = os.path.join(datos_dir_path, 'json', output_filename)
 
     main(csv_dir_path, output_path)
+    
+    
+def main(csv_dir_path:str, output_path:str):
+    ''' Función Principal '''
+
+    dir_areas = os.path.join(csv_dir_path, 'areas')
+    dir_catalogs = os.path.join(csv_dir_path, 'catalogos')
