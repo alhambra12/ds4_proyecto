@@ -1,4 +1,25 @@
-import os, csv, json, argparse
+import os, csv, json, argparse  
+    
+def main(csv_dir_path:str, output_path:str):
+    ''' Función Principal '''
+
+    dir_areas = os.path.join(csv_dir_path, 'areas')
+    dir_catalogs = os.path.join(csv_dir_path, 'catalogos')
+    
+def check_dir(dir_path:str) -> bool:
+    if not os.path.exists(dir_path):
+        print(f"No existe el directorio '{dir_path}'.")
+        return False
+    print(f"Directorio encontrado en '{dir_path}'.")
+    files = os.listdir(dir_path)
+    if not files:
+        print(f"El directorio '{dir_path}' esta vacio.")
+        return False
+    csv_files = [f for f in files if f.lower().endswith('.csv')]
+    if not csv_files:
+        print(f"El directorio '{dir_path}' no contiene archivos CSV.")
+        return False
+    return True
 
 if __name__ == '__main__':
 
@@ -13,12 +34,5 @@ if __name__ == '__main__':
     datos_dir_path = os.path.normpath(datos_dir_path)
     csv_dir_path = os.path.join(datos_dir_path, 'csv')
     output_path = os.path.join(datos_dir_path, 'json', output_filename)
-
+    
     main(csv_dir_path, output_path)
-    
-    
-def main(csv_dir_path:str, output_path:str):
-    ''' Función Principal '''
-
-    dir_areas = os.path.join(csv_dir_path, 'areas')
-    dir_catalogs = os.path.join(csv_dir_path, 'catalogos')
