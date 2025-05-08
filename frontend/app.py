@@ -34,5 +34,22 @@ def areas():
         areas_set.update(journal.areas)
     return render_template('option_selection.html', option_type='areas', options_list=sorted(areas_set))
 
+@app.route('/areas/<area>')
+def journals_area(area):
+    journals_by_area = [j for j in journals if area in j.areas]
+    return render_template('option_results.html', journals=journals_by_area, option=area, option_type='areas')
+
+@app.route('/catalogos')
+def catalogs():
+    catalogs_set = set()
+    for journal in journals:
+        catalogs_set.update(journal.catalogs)
+    return render_template('option_selection.html', option_type='catalogs', options_list=sorted(catalogs_set))
+
+@app.route('/catalogos/<catalogs>')
+def journals_catalog(catalogs):
+    journals_by_catalog = [j for j in journals if catalogs in j.catalogs]
+    return render_template('option_results.html', journals=journals_by_catalog, option=catalogs, option_type='areas')
+
 if __name__ == '__main__':
     app.run(debug=True)
