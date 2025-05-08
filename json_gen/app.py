@@ -1,3 +1,5 @@
+''' Programa generador de json '''
+
 import os, csv, json, argparse  
     
 def get_titles(archivo: str) -> list:

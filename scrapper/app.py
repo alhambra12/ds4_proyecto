@@ -1,6 +1,6 @@
-import argparse, os
-
 ''' Programa scrapper para scimagojr.com '''
+
+import argparse, os
 
 def main(input_path:str, output_path:str):
 
