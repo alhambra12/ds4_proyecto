@@ -2,7 +2,6 @@
 
 import os, argparse
 from functions import load_journals
-from functions import load_journals
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -33,7 +32,7 @@ def areas():
     areas_set = set()
     for journal in journals:
         areas_set.update(journal.areas)
-    return render_template('options_selection.html', option_type='areas', options_list=sorted(areas_set))
+    return render_template('option_selection.html', option_type='areas', options_list=sorted(areas_set))
 
 if __name__ == '__main__':
     app.run(debug=True)

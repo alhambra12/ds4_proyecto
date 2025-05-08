@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{% if option_type == 'areas' %}
+    Journal Database - Áreas
+{% else %}
+    Journal Database - Catalogos
+{% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+
+    <h1 class="mb-4">
+        {% if option_type == 'areas' %}
+        Selecciona un área:
+        {% else %}
+        Selecciona un catalogo:
+        {% endif %}
+    </h1>
+
+    <ul class="list-group">
+        {% for option in options_list %}
+        <li class="list-group-item">
+            {% if option_type == 'areas' %}
+                <a href="/areas/{{ option }}" class="text-decoration-none">
+                    {{ option }}
+                </a>
+            {% else %}
+                <a href="/catalogos/{{ option }}" class="text-decoration-none">
+                    {{ option }}
+                </a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+{% endblock %}
