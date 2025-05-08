@@ -1,11 +1,5 @@
 import os, csv, json, argparse  
     
-def main(csv_dir_path:str, output_path:str):
-    ''' Función Principal '''
-
-    dir_areas = os.path.join(csv_dir_path, 'areas')
-    dir_catalogs = os.path.join(csv_dir_path, 'catalogos')
-    
 def check_dir(dir_path:str) -> bool:
     if not os.path.exists(dir_path):
         print(f"No existe el directorio '{dir_path}'.")
@@ -20,6 +14,22 @@ def check_dir(dir_path:str) -> bool:
         print(f"El directorio '{dir_path}' no contiene archivos CSV.")
         return False
     return True
+
+def main(csv_dir_path:str, output_path:str):
+    ''' Función Principal '''
+
+    dir_areas = os.path.join(csv_dir_path, 'areas')
+    dir_catalogs = os.path.join(csv_dir_path, 'catalogos')
+
+    # verifica si existen los directorios y contienen csv.
+    print('\nVerificando directorio de areas:')
+    if not check_dir(dir_areas):
+        print("\nPrograma finalizado.\n")
+        return
+    print('\nVerificando directorio de catalogos:')
+    if not check_dir(dir_catalogs):
+        print("\nPrograma finalizado.\n")
+        return
 
 if __name__ == '__main__':
 
