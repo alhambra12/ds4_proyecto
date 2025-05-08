@@ -9,6 +9,16 @@ def get_titles(archivo: str) -> list:
         next(reader, None)
         return [row[0].strip() for row in reader if row and row[0].strip()]
 
+def create_dir_dict(dir_path: str) -> dict:
+    ''' Crea un diccionario con el título como clave y una lista con el nombre de los archivos como valor'''
+    dir_dict = {}
+    for file in os.listdir(dir_path):
+        if file.endswith(".csv"):
+            filename = os.path.splitext(file)[0]
+            for title in get_titles(os.path.join(dir_path, file)):
+                dir_dict.setdefault(title, []).append(filename)
+    return dir_dict
+
 def check_dir(dir_path:str) -> bool:
     if not os.path.exists(dir_path):
         print(f"No existe el directorio '{dir_path}'.")
