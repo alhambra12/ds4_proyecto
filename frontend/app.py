@@ -28,5 +28,12 @@ journals = load_journals(os.path.join(json_dir_path, journals_json))
 def index():
     return render_template('index.html')
 
+@app.route('/areas')
+def areas():
+    areas_set = set()
+    for journal in journals:
+        areas_set.update(journal.areas)
+    return render_template('options_selection.html', option_type='areas', options_list=sorted(areas_set))
+
 if __name__ == '__main__':
     app.run(debug=True)
