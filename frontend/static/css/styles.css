@@ -1,0 +1,38 @@
+
+:root {
+    --color-blue: #25315a;
+    --color-orange: #ff9300;
+}
+
+html {
+    height: 100%;
+}
+
+.navbar-custom {
+    background-color: var(--color-blue);
+}
+
+.inverted-color {
+    filter: invert(1);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-blue);
+}
+
+.footer-custom {
+    background-color: var(--color-blue);
+}
+
+.limited-width {
+    max-width: 600px;
+}
+
+.card-area {
+    background-color: var(--color-orange);
+    color: white;
+    transition: transform 0.2s;
+}
+.card-area:hover {
+    transform: translateY(-5px);
+}
