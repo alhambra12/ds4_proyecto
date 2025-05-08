@@ -12,3 +12,20 @@ class Journal:
         self.issn = issn
         self.widget = widget
         self.publication_type = publication_type
+       
+        
+    def to_dict(self):
+        ''' Retorna un diccionario con los atributos del objeto '''
+        return {
+            'id': self.id,
+            'title': self.title,
+            'areas': self.areas,
+            'catalogs': self.catalogs,
+            'website': self.website,
+            'h_index': self.h_index,
+            'area_category': self.subjet_area_and_category,
+            'publisher': self.publisher,
+            'issn': self.issn,
+            'widget': self.widget,
+            'publication_type': self.publication_type
+        }
