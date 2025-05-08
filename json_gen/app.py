@@ -60,6 +60,11 @@ def main(csv_dir_path:str, output_path:str):
             print('\nPrograma finalizado.\n')
             return
 
+    # crear diccionarios
+    dict_areas = create_dir_dict(dir_areas)
+    dict_catalogs = create_dir_dict(dir_catalogs)
+    dict_journal = create_journal_dict(dict_areas, dict_catalogs)
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
