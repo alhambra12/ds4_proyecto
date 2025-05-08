@@ -1,6 +1,8 @@
 '''  Programa frontend de revistas '''
 
 import os, argparse
+from functions import load_journals
+from functions import load_journals
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -19,7 +21,8 @@ json_dir_path = os.path.normpath(json_dir_path)
 unison_json_path = os.path.join(json_dir_path, unison_json_filename)
 scimago_json = os.path.join(json_dir_path, scimago_json_filename)
 
-
+journals_json = 'journals.json'
+journals = load_journals(os.path.join(json_dir_path, journals_json))
 
 @app.route('/')
 def index():
