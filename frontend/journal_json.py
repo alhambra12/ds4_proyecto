@@ -30,7 +30,7 @@ def create_id(journal_title:str) -> str:
 
 def gen_journal_json(json_dir_path: str, unison_json_path: str, scimago_json_path: str) -> None:
     ''' Combina los datos de Unison y Scimago en un solo json '''
-    print('Generando archivo JSON')
+    print('\nGenerando archivo JSON.')
     unison_json = load_json(unison_json_path)
     scimago_json = load_json(scimago_json_path)
     unified_json = unify_data(unison_json, scimago_json)

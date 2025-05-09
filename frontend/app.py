@@ -5,47 +5,50 @@ from journal_json import gen_journal_json
 from functions import load_journals, check_path
 from flask import Flask, render_template
 
-app = Flask(__name__)
-journals = []
+def create_app(journals_data):
+    app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
-@app.route('/revista/<id_journal>')
-def journal(id_journal):
-    ''' Página de detalles de la revista '''
-    journal = next((j for j in journals if j.id == id_journal), None)
-    if journal is None:
-        return render_template('404.html'), 404
-    return render_template('journal.html', journal=journal)
+    @app.route('/revista/<id_journal>')
+    def journal(id_journal):
+        journal = next((j for j in journals_data if j.id == id_journal), None)
+        if journal is None:
+            return render_template('404.html'), 404
+        return render_template('journal.html', journal=journal)
 
-@app.route('/areas')
-def areas():
-    areas_set = set()
-    for journal in journals:
-        areas_set.update(journal.areas)
-    return render_template('option_selection.html', option_type='areas', options_list=sorted(areas_set))
+    @app.route('/areas')
+    def areas():
+        areas_set = set()
+        for journal in journals_data:
+            areas_set.update(journal.areas)
+        return render_template('option_selection.html', option_type='areas', options_list=sorted(areas_set))
 
-@app.route('/areas/<area>')
-def journals_area(area):
-    journals_by_area = [j for j in journals if area in j.areas]
-    return render_template('option_results.html', journals=journals_by_area, option=area, option_type='areas')
+    @app.route('/areas/<area>')
+    def journals_area(area):
+        journals_by_area = [j for j in journals_data if area in j.areas]
+        return render_template('option_results.html', journals=journals_by_area, option=area, option_type='areas')
 
-@app.route('/catalogos')
-def catalogs():
-    catalogs_set = set()
-    for journal in journals:
-        catalogs_set.update(journal.catalogs)
-    return render_template('option_selection.html', option_type='catalogs', options_list=sorted(catalogs_set))
+    @app.route('/catalogos')
+    def catalogs():
+        catalogs_set = set()
+        for journal in journals_data:
+            catalogs_set.update(journal.catalogs)
+        return render_template('option_selection.html', option_type='catalogs', options_list=sorted(catalogs_set))
 
-@app.route('/catalogos/<catalogs>')
-def journals_catalog(catalogs):
-    journals_by_catalog = [j for j in journals if catalogs in j.catalogs]
-    return render_template('option_results.html', journals=journals_by_catalog, option=catalogs, option_type='areas')
+    @app.route('/catalogos/<catalogs>')
+    def journals_catalog(catalogs):
+        journals_by_catalog = [j for j in journals_data if catalogs in j.catalogs]
+        return render_template('option_results.html', journals=journals_by_catalog, option=catalogs, option_type='areas')
+
+    return app
 
 def main(json_dir_path, unison_json_filename, scimago_json_filename):
     global journals
+
+    print('\nIniciando programa.')
 
     journals_json_filename = 'journals.json'
     journals_json_path = os.path.join(json_dir_path, journals_json_filename)
@@ -63,6 +66,8 @@ def main(json_dir_path, unison_json_filename, scimago_json_filename):
 
     journals = load_journals(journals_json_path)
 
+    print('\nIniciando app flask.\n')
+    app = create_app(journals)
     app.run(debug=True) 
 
 if __name__ == '__main__':
