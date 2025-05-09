@@ -44,6 +44,10 @@ def create_journal_dict(dict_areas: dict, dict_catalogs: dict) -> dict:
         for title in set(dict_areas) | set(dict_catalogs)
     }
 
+def save_json(dic_revista:dict, dir_json: str) -> None:
+    with open(dir_json, "w", encoding="utf-8") as f:
+        json.dump(dic_revista, f, ensure_ascii=False, indent=2)
+
 def main(csv_dir_path:str, output_path:str):
     ''' Función Principal '''
 
