@@ -15,3 +15,10 @@ def scrap(url) -> requests.Response:
     if page.status_code != 200:
         raise Exception(f"X Error: {page.status_code} en '{url}'")
     return page
+
+if __name__ == '__main__':
+    try:
+        response = scrap("https://www.scimagojr.com")
+        print(response.text)  # muestra el html
+    except Exception as e:
+        print(f"Error al obtener la página: {e}")
