@@ -34,6 +34,16 @@ def check_dir(dir_path:str) -> bool:
         return False
     return True
 
+def create_journal_dict(dict_areas: dict, dict_catalogs: dict) -> dict:
+    ''' Crea un diccionario de revistas con sus áreas y catálogos'''
+    return {
+        title: {
+            "areas": dict_areas.get(title, []),
+            "catalogs": dict_catalogs.get(title, [])
+        }
+        for title in set(dict_areas) | set(dict_catalogs)
+    }
+
 def main(csv_dir_path:str, output_path:str):
     ''' Función Principal '''
 
