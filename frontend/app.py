@@ -1,8 +1,8 @@
 '''  Programa frontend de revistas '''
 
 import os, argparse
-from journal_json import create_journal_json
-from functions import load_journals
+from journal_json import gen_journal_json
+from functions import load_journals, check_path
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -44,10 +44,18 @@ def journals_catalog(catalogs):
     journals_by_catalog = [j for j in journals if catalogs in j.catalogs]
     return render_template('option_results.html', journals=journals_by_catalog, option=catalogs, option_type='areas')
 
-def main(json_dir_path, unison_json_path, scimago_json_path):
+def main(json_dir_path, unison_json_filename, scimago_json_filename):
     global journals
-    journals_json = create_journal_json(json_dir_path, unison_json_path, scimago_json_path)
-    journals = load_journals(os.path.join(json_dir_path, journals_json))
+    journals_json_filename = 'journals.json'
+
+    journals_json_path = os.path.join(json_dir_path, journals_json_filename)
+    unison_json_path = os.path.join(json_dir_path, unison_json_filename)
+    scimago_json_path = os.path.join(json_dir_path, scimago_json_filename)
+
+    if not check_path(journals_json_path):
+        journals_json = gen_journal_json(journals_json_path, unison_json_path, scimago_json_path)
+
+    journals = load_journals(journals_json_path)
 
     app.run(debug=True) 
 
@@ -63,7 +71,5 @@ if __name__ == '__main__':
     scimago_json_filename = args.scimago_json_filename or 'revistas_scimagojr_test.json'
 
     json_dir_path = os.path.normpath(json_dir_path)
-    unison_json_path = os.path.join(json_dir_path, unison_json_filename)
-    scimago_json_path = os.path.join(json_dir_path, scimago_json_filename)
 
-    main(json_dir_path, unison_json_path, scimago_json_path)
+    main(json_dir_path, unison_json_filename, scimago_json_filename)
