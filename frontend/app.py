@@ -58,7 +58,7 @@ def create_app(journals):
             'filter_results.html',
             journals=paginated,
             filter=catalogs,
-            filter_type='areas',
+            filter_type='catalogs',
             page=page,
             total_pages=total_pages
         )
