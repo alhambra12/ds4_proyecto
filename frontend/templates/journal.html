@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Journal Database - {{ journal.title }}{% endblock %}
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ journal.title }}</title>
+</head>
+<body>
+    <h1>{{ journal.title }}</h1>
+    <p>ID: {{ journal.id }}</p>
+    <p>H-index: {{ journal.h_index }}</p>
+    <p>Sitio web: <a href="{{ journal.website }}" target="_blank">{{ journal.website }}</a></p>
+    <p>Publisher: {{ journal.publisher }}</p>
+    <p>ISSN: {{ journal.issn }}</p>
+    <p>Widget: {{ journal.widget }}</p>
+    <p>Tipo de publicación: {{ journal.publication_type }}</p>
+
+    <h3>Áreas:</h3>
+    <ul>
+        {% for area in journal.areas %}
+        <li>{{ area }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Catálogos:</h3>
+    <ul>
+        {% for catalog in journal.catalogs %}
+        <li>{{ catalog }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Área y Categorías:</h3>
+    <ul>
+        {% for subjet_area_and_category in journal.subjet_area_and_category %}
+        <li><strong>{{ subjet_area_and_category.area }}</strong>
+            <ul>
+                {% for categoria in subjet_area_and_category.categorias %}
+                <li>{{ categoria }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+{% endblock %}
