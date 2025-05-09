@@ -2,11 +2,13 @@
 
 import os, argparse
 from journal_json import gen_journal_json
-from functions import load_journals, check_path
-from flask import Flask, render_template
+from functions import load_journals, check_path, paginate
+from flask import Flask, render_template, request
 
 def create_app(journals):
     app = Flask(__name__)
+
+    per_page = 20
 
     @app.route('/')
     def index():
@@ -26,8 +28,18 @@ def create_app(journals):
 
     @app.route('/areas/<area>')
     def journals_area(area):
+        page = int(request.args.get('page', 1))
         journals_by_area = [j for j in journals if area in j.areas]
-        return render_template('filter_results.html', journals=journals_by_area, filter=area, filter_type='areas')
+        paginated, total_pages = paginate(journals_by_area, page)
+
+        return render_template(
+            'filter_results.html',
+            journals=paginated,
+            filter=area,
+            filter_type='areas',
+            page=page,
+            total_pages=total_pages
+        )
 
     @app.route('/catalogos')
     def catalogs():
@@ -38,8 +50,18 @@ def create_app(journals):
 
     @app.route('/catalogos/<catalogs>')
     def journals_catalog(catalogs):
+        page = int(request.args.get('page', 1))
         journals_by_catalog = [j for j in journals if catalogs in j.catalogs]
-        return render_template('filter_results.html', journals=journals_by_catalog, filter=catalogs, filter_type='catalogs')
+        paginated, total_pages = paginate(journals_by_catalog, page)
+
+        return render_template(
+            'filter_results.html',
+            journals=paginated,
+            filter=catalogs,
+            filter_type='areas',
+            page=page,
+            total_pages=total_pages
+        )
 
     return app
 
