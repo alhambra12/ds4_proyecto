@@ -1,6 +1,7 @@
 '''  Programa frontend de revistas '''
 
 import os, argparse
+from journal_json import create_journal_json
 from functions import load_journals
 from flask import Flask, render_template
 
@@ -10,6 +11,14 @@ journals = []
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/revista/<id_journal>')
+def journal(id_journal):
+    ''' Página de detalles de la revista '''
+    journal = next((j for j in journals if j.id == id_journal), None)
+    if journal is None:
+        return render_template('404.html'), 404
+    return render_template('journal.html', journal=journal)
 
 @app.route('/areas')
 def areas():
@@ -37,7 +46,7 @@ def journals_catalog(catalogs):
 
 def main(json_dir_path, unison_json_path, scimago_json_path):
     global journals
-    journals_json = 'revista.json'
+    journals_json = create_journal_json(json_dir_path, unison_json_path, scimago_json_path)
     journals = load_journals(os.path.join(json_dir_path, journals_json))
 
     app.run(debug=True) 
