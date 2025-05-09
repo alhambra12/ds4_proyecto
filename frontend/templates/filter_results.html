@@ -35,4 +35,41 @@
     {% endif %}
 </div>
 
+{% if total_pages > 1 %}
+<nav aria-label="Paginación" class="mt-4">
+  <ul class="pagination justify-content-center">
+
+    {% if page > 1 %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page - 1 }}" aria-label="Anterior">
+        &laquo; Anterior
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link">&laquo; Anterior</span>
+    </li>
+    {% endif %}
+
+    <li class="page-item disabled">
+      <span class="page-link">Página {{ page }} de {{ total_pages }}</span>
+    </li>
+
+    {% if page < total_pages %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page + 1 }}" aria-label="Siguiente">
+        Siguiente &raquo;
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link">Siguiente &raquo;</span>
+    </li>
+    {% endif %}
+
+  </ul>
+</nav>
+{% endif %}
+
+
 {% endblock %}

@@ -27,12 +27,12 @@
         {% for filter in filter_list %}
         <li class="list-group-item">
             {% if filter_type == 'areas' %}
-                <a href="/areas/{{ filter }}" class="text-decoration-none">
+                <a href="/areas/{{ filter }}?page=1" class="text-decoration-none">
                     {{ filter }}
                 </a>
             {% endif %}
             {% if filter_type == 'catalogs' %}
-                <a href="/catalogos/{{ filter }}" class="text-decoration-none">
+                <a href="/catalogos/{{ filter }}?page=1" class="text-decoration-none">
                     {{ filter }}
                 </a>
             {% endif %}
