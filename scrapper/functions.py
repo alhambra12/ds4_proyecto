@@ -4,7 +4,6 @@ headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36' 
      }
 scimagojr_search_url = 'https://www.scimagojr.com/journalsearch.php?q='
-scimagojr_search_url = 'https://www.scimagojr.com/journalsearch.php?q='
 scimagojr_url = 'https://www.scimagojr.com'
 
 ''' Archivo de funciones '''
@@ -50,6 +49,27 @@ def find_journal_url(title:str) -> str:
         return None
     print(f"URL encontrada: '{results[best_result]}'")
     return results[best_result]
+
+def get_journal_data(url:str) -> dict:
+    ''' Función que obtiene los datos de una revista '''
+    
+    # busca la revista en scimagojr
+    try:
+        journal_page = scrap(url)
+    except Exception as e:
+        print(f"X Error accediendo a '{url}': {e}")
+    soup = BeautifulSoup(journal_page.text, 'html.parser')
+
+    # obtiene datos de la revista
+    data = {
+        'website': ,
+        'h_index': ,
+        'subjet_area_and_category': ,
+        'publisher': ,
+        'issn': ,
+        'publication_type': ,
+        'widget':
+    }
 
 if __name__ == '__main__':
     title = 'Facta Universitatis, Series: Mechanical Engineering'    

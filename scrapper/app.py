@@ -31,9 +31,9 @@ if __name__ == '__main__':
     parser.add_argument('--input_filename', type=str, help='Archivo de entrada')
     parser.add_argument('--output_filename', type=str, help='Archivo de salida')
     args = parser.parse_args()
-'''
+
     datos_dir_path = args.datos_dir_path or os.path.join(os.path.dirname(__file__), '..', 'datos')
-    input_filename = args.input_filename or 'ya q le funcionen los json al ale le ponemos un file lol'
+    input_filename = args.input_filename or 'revistas_unison_test.json'
     output_filename = args.output_filename or 'revistas_scimagojr_test.json'
 
     json_dir_path = os.path.normpath(os.path.join(datos_dir_path, 'json'))
@@ -41,4 +41,3 @@ if __name__ == '__main__':
     output_path = os.path.join(json_dir_path, output_filename)
 
     main(input_path, output_path)
-'''
