@@ -78,6 +78,11 @@ def main(csv_dir_path:str, output_path:str):
     dict_areas = create_dir_dict(dir_areas)
     dict_catalogs = create_dir_dict(dir_catalogs)
     dict_journal = create_journal_dict(dict_areas, dict_catalogs)
+    
+    # guarda archivo json
+    save_json(dict_journal, output_path)
+    print(f"\nArchivo JSON guardado en '{output_path}'")
+    print("\nPrograma finalizado.\n")
 
 if __name__ == '__main__':
 
