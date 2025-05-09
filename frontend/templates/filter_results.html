@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Journal Database - {{ option }}
+    Journal Database - {{ filter }}
 {% endblock %}
 
 {% block body %}
 
 <div class="container mt-5">
-    {% if option_type == 'areas' %}
-        <h1 class="mb-4">Revistas en el área: <strong>{{ option }}</strong></h1>
-    {% else %}
-        <h1 class="mb-4">Revistas en el catálogo: <strong>{{ option }}</strong></h1>
+    {% if filter_type == 'areas' %}
+        <h1 class="mb-4">Revistas en el área: <strong>{{ filter }}</strong></h1>
+    {% endif %}
+    {% if filter_type == 'catalogs' %}
+        <h1 class="mb-4">Revistas en el catálogo: <strong>{{ filter }}</strong></h1>
     {% endif %}
 
 
@@ -19,7 +20,7 @@
         {% for journal in journals %}
         <li class="list-group-item">
             <h5 class="mb-1">
-                <a href="/revista/{{ journal.id }}" class="text-decoration-none text-primary">
+                <a href="/revistas/{{ journal.id }}" class="text-decoration-none text-primary">
                     {{ journal.title }}
                 </a>
             </h5>

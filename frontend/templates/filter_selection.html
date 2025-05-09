@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{% if option_type == 'areas' %}
+    Journal Database - Áreas
+{% else %}
+    Journal Database - Catálogos
+{% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+
+    <h1 class="mb-4">
+        {% if filter_type == 'areas' %}
+        Selecciona un área
+        {% endif %}
+        {% if filter_type == 'catalogs' %}
+        Selecciona un catálogo
+        {% endif %}
+    </h1>
+
+    <ul class="list-group">
+        {% for filter in filter_list %}
+        <li class="list-group-item">
+            {% if filter_type == 'areas' %}
+                <a href="/areas/{{ filter }}" class="text-decoration-none">
+                    {{ filter }}
+                </a>
+            {% endif %}
+            {% if filter_type == 'catalogs' %}
+                <a href="/catalogos/{{ filter }}" class="text-decoration-none">
+                    {{ filter }}
+                </a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+{% endblock %}
