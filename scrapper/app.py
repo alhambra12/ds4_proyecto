@@ -1,6 +1,7 @@
 ''' Programa scrapper para scimagojr.com '''
 
 import argparse, os
+import functions as fn
 
 def main(input_path:str, output_path:str):
 
@@ -19,6 +20,9 @@ def main(input_path:str, output_path:str):
         else:    
             print('\nPrograma finalizado.\n')
             return
+    
+    # cargar json
+    journal_json = fn.load_json(input_path)
 
 if __name__ == '__main__':
     
