@@ -46,7 +46,7 @@ def journals_catalog(catalogs):
 
 def main(json_dir_path, unison_json_filename, scimago_json_filename):
     global journals
-    
+
     journals_json_filename = 'journals.json'
     journals_json_path = os.path.join(json_dir_path, journals_json_filename)
     unison_json_path = os.path.join(json_dir_path, unison_json_filename)
@@ -59,9 +59,9 @@ def main(json_dir_path, unison_json_filename, scimago_json_filename):
         if check_path(scimago_json_path) is False:
             print('\nPrograma finalizado.\n')
             return
-        journals_json = gen_journal_json(journals_json_path, unison_json_path, scimago_json_path)
+        gen_journal_json(journals_json_path, unison_json_path, scimago_json_path)
 
-    # journals = load_journals(journals_json_path)
+    journals = load_journals(journals_json_path)
 
     app.run(debug=True) 
 

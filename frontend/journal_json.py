@@ -1,16 +1,7 @@
 ''' Archivo para generar json de revistas para frontend '''
 
-import re, json, unicodedata
-
-def load_json(path: str) -> dict:
-    ''' Carga un archivo json '''
-    with open(path, 'r', encoding='utf8') as f:
-        return json.load(f)
-    
-def save_json(data: dict, path: str) -> None:
-    ''' Guarda diccionario como archivo json '''
-    with open(path, 'w', encoding='utf8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+import os, re, unicodedata
+from functions import load_json, save_json
 
 def unify_data(unison_json: dict, scimago_json: dict) -> dict:
     ''' Une solo los títulos que aparecen en ambos JSONs '''
@@ -39,7 +30,21 @@ def create_id(journal_title:str) -> str:
 
 def gen_journal_json(json_dir_path: str, unison_json_path: str, scimago_json_path: str) -> None:
     ''' Combina los datos de Unison y Scimago en un solo json '''
+    print('Generando archivo JSON')
     unison_json = load_json(unison_json_path)
     scimago_json = load_json(scimago_json_path)
     unified_json = unify_data(unison_json, scimago_json)
-    save_json(json_dir_path, unified_json)
+    save_json(unified_json, json_dir_path)
+    print(f"Archivo JSON guardado en '{json_dir_path}'.")
+
+if __name__ == '__main__':
+    journals_json_filename = 'journals.json'
+    unison_json_filename = 'revistas_unison_test.json'
+    scimago_json_filename = 'revistas_scimagojr_test.json'
+
+    json_dir_path = os.path.join(os.path.dirname(__file__), '..', 'datos', 'json')
+    journals_json_path = os.path.join(json_dir_path, journals_json_filename)
+    unison_json_path = os.path.join(json_dir_path, unison_json_filename)
+    scimago_json_path = os.path.join(json_dir_path, scimago_json_filename)
+
+    gen_journal_json(journals_json_path, unison_json_path, scimago_json_path)
