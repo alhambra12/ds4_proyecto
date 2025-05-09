@@ -1,11 +1,19 @@
-import json
+import os, json
 from journal_class import Journal
 
 def load_json(path: str) -> dict:
     ''' Carga un archivo json '''
     with open(path, 'r', encoding='utf8') as f:
         return json.load(f)
-    
+
+def check_path(path:str) -> bool:
+    ''' Función para verificar si existe archivo '''
+    if not os.path.exists(path):
+        print(f"\nEl archivo en '{path}' no existe")
+        return True
+    return False
+
+
 def load_journals(path: str) -> list:
     ''' Crea una lista con la clase Journal '''
     journal_json = load_json(path)
