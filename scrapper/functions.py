@@ -30,10 +30,18 @@ def find_journal_url(title:str) -> str:
         print(f"X Error buscando '{title}': {e}")
         return None
     soup = BeautifulSoup(search_page.text, 'html.parser')
+    
+    # crea un diccionario con el nombre de la revista y su url
+    results = {}
+    for a in soup.select('a[href^="journalsearch.php?q="]'):
+        title_result = a.select_one('span.jrnlname')
+        if title_result:
+            results[title_result.text.strip()] = f"{scimagojr_search_url}/{a['href']}"
+    if not results:
+        print(f"X No hay resultados para '{title}'")
+        return None
 
 if __name__ == '__main__':
-    try:
-        response = scrap("https://www.scimagojr.com")
-        print(response.text)  # muestra el html
-    except Exception as e:
-        print(f"Error al obtener la página: {e}")
+    title = 'FactaUniversitatis,Series:MechanicalEngineering'    
+    url = find_journal_url(title)
+    
