@@ -9,10 +9,11 @@ def load_json(path: str) -> dict:
 def check_path(path:str) -> bool:
     ''' Función para verificar si existe archivo '''
     if not os.path.exists(path):
-        print(f"\nEl archivo en '{path}' no existe")
+        print(f"\nEl archivo en '{path}' no existe.")
+        return False
+    else:
+        print(f"\nArchivo encontrado en '{path}'.")
         return True
-    return False
-
 
 def load_journals(path: str) -> list:
     ''' Crea una lista con la clase Journal '''
