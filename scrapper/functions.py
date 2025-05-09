@@ -50,6 +50,15 @@ def find_journal_url(title:str) -> str:
     print(f"URL encontrada: '{results[best_result]}'")
     return results[best_result]
 
+def get_website(soup: BeautifulSoup) -> str:
+    ''' Función que obtiene la pagina web '''
+    heading = soup.find('h2', string='Information')
+    if heading:
+        for a in heading.find_all_next('a', id='question_journal'):
+            if 'Homepage' in a.text:
+                return a['href'].strip()
+    return None
+
 def get_journal_data(url:str) -> dict:
     ''' Función que obtiene los datos de una revista '''
     
@@ -62,16 +71,19 @@ def get_journal_data(url:str) -> dict:
 
     # obtiene datos de la revista
     data = {
-        'website': ,
-        'h_index': ,
-        'subjet_area_and_category': ,
-        'publisher': ,
-        'issn': ,
-        'publication_type': ,
-        'widget':
+        'website':get_website(soup),
+        'h_index':'',
+        'subjet_area_and_category':'',
+        'publisher':'',
+        'issn':'',
+        'publication_type':'',
+        'widget':''
     }
+    return data
 
 if __name__ == '__main__':
-    title = 'Facta Universitatis, Series: Mechanical Engineering'    
+    title = 'Facta Universitatis, Series: Mechanical Engineering'
     url = find_journal_url(title)
-    
+    if url:
+        data = get_journal_data(url)
+        print(data)
