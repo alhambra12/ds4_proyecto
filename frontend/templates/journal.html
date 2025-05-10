@@ -27,13 +27,14 @@
 
     {% if journal.issn %}
         <h4 class="mt-4">ISSN</h4>
-        {% for issn in journal.issn %}
-            <li><a>{{ issn }}</a></li>
-        {% endfor %}
+        <ul>
+            {% for issn in journal.issn %}
+            <li>
+                {{ issn }}
+            </li>
+            {% endfor %}
+        </ul>
     {% endif %}
-
-
-
 
     {% if journal.publication_type %}
         <h4 class="mt-4">Tipo de publicación</h4>
@@ -46,7 +47,7 @@
     {% endif %}
 
     {% if journal.areas %}
-        <h4 class="mt-4">Áreas</h4>
+        <h4 class="mt-4">Áreas (UNISON)</h4>
         <ul>
             {% for area in journal.areas %}
                 <li>
@@ -57,7 +58,7 @@
     {% endif %}
 
     {% if journal.catalogs %}
-        <h4 class="mt-4">Catálogos</h4>
+        <h4 class="mt-4">Catálogos (UNISON)</h4>
         <ul>
             {% for catalog in journal.catalogs %}
                 <li>
