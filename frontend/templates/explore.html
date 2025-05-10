@@ -27,7 +27,7 @@
                 {% for journal in journals %}
                 <li class="list-group-item mb-3">
                     <h5 class="mb-1">
-                        <a href="/revista/{{ journal.id }}" class="text-decoration-none text-primary">
+                        <a href="/revistas/{{ journal.id }}" class="text-decoration-none text-primary">
                             {{ journal.title }}
                         </a>
                     </h5>
@@ -36,7 +36,7 @@
                     <p class="mb-1">
                         <strong>Catálogos:</strong>
                         {% for catalog in journal.catalogs %}
-                            <a href="/catalogos/{{ catalog }}" class="text-decoration-none">
+                            <a href="/catalogos/{{ catalog }}?pagina=1" class="text-decoration-none">
                                 {{ catalog }}
                             </a>
                             {% if not loop.last %}
@@ -50,7 +50,7 @@
                     <p class="mb-1">
                         <strong>Áreas:</strong>
                         {% for area in journal.areas %}
-                            <a href="/areas/{{ area }}" class="text-decoration-none">{{ area }}</a>
+                            <a href="/areas/{{ area }}?pagina=1" class="text-decoration-none">{{ area }}</a>
                             {% if not loop.last %}
                             , 
                             {% endif %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Journal Database - Búsqueda por Título{% endblock %}
+{% block body %}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Búsqueda por título</h1>
+    <p class="mb-3">Busca una o más palabras del título de una revista</p>
+
+    <form action="/busqueda" method="get" class="mb-5">
+        <div class="mb-3">
+            <input type="text" name="q" id="titulo" class="form-control" value="{{ search_text }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+
+    {% if search_text %}
+        <h4 class="mb-3">Resultados:</h4>
+        {% if journals %}
+            <ul class="list-group mb-5">
+                {% for journal in journals %}
+                <li class="list-group-item mb-3">
+                    <h5>
+                        <a href="/revistas/{{ journal.id }}" class="text-decoration-none text-primary">
+                            {{ journal.title }}
+                        </a>
+                    </h5>
+
+                    {% if journal.catalogs %}
+                    <p class="mb-1">
+                        <strong>Catálogos:</strong>
+                        {% for catalog in journal.catalogs %}
+                            <a href="/catalogos/{{ catalog }}" class="text-decoration-none">{{ catalog }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+
+                    {% if journal.areas %}
+                    <p class="mb-1">
+                        <strong>Áreas:</strong>
+                        {% for area in journal.areas %}
+                            <a href="/areas/{{ area }}" class="text-decoration-none">{{ area }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+
+                    {% if journal.h_index %}
+                    <p class="mb-0"><strong>H-index:</strong> {{ journal.h_index }}</p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+
+            {% if total_pages > 1 %}
+            <nav aria-label="Paginación" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ search_text }}&pagina={{ page - 1 }}">&laquo; Anterior</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo; Anterior</span>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item disabled">
+                        <span class="page-link">Página {{ page }} de {{ total_pages }}</span>
+                    </li>
+
+                    {% if page < total_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ search_text }}&pagina={{ page + 1 }}">Siguiente &raquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Siguiente &raquo;</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+        {% else %}
+        <div class="alert alert-warning">No se encontraron revistas con ese título.</div>
+        {% endif %}
+    {% endif %}
+</div>
+
+{% endblock %}
