@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
     {% block head %}
-        <title>{% block title %}Journal Database{% endblock %}</title>
+        <title>{% block title %}Journal Jar{% endblock %}</title>
     {% endblock %}
 
 </head>
@@ -19,7 +19,12 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
         <div class="container-lg">
-            <a class="navbar-brand fw-bold" href="/">Journal Database</a>
+            <a href="/" class="navbar-brand">
+                        <img src="{{ url_for('static', filename='images/journaljar_bw_logo.png') }}" alt="Jounal Jar logo" height="40" class="inverted-color">
+            </a>
+            <a href="/" class="navbar-brand">
+                        <img src="{{ url_for('static', filename='images/journaljar_bw_wordmark.png') }}" alt="Jounal Jar logo" height="40" class="inverted-color">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
                     data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
                     aria-label="Toggle navigation">
@@ -65,7 +70,7 @@
     <footer class="footer-custom mt-auto py-3 text-white">
         <div class="container-lg">
             <div class="d-flex flex-column align-items-center">
-                <p class="mb-0">© 2025 Journal Database. Todos los derechos reservados.</p>
+                <p class="mb-0">© 2025 Journal Jar. Todos los derechos reservados.</p>
             </div>
             {% block footer %}{% endblock %}
         </div>
