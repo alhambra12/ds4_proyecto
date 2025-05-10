@@ -82,6 +82,13 @@ def get_subject_area_and_category(soup: BeautifulSoup) -> list:
             result[area] = categories
     return result
 
+def get_issn(soup: BeautifulSoup) -> list:
+    ''' Función que obtiene el issn '''
+    text = get_data(soup, 'ISSN', 'p')
+    if text:
+        return [issn.strip() for issn in text.split(',')] if text else None
+    return None
+
 def get_journal_data(url:str) -> dict:
     ''' Función que obtiene los datos de una revista '''
     
@@ -98,7 +105,7 @@ def get_journal_data(url:str) -> dict:
         'h_index':get_data(soup, 'H-Index', 'p', 'hindexnumber'),
         'subjet_area_and_category':get_subject_area_and_category(soup),
         'publisher':get_data(soup, 'Publisher', 'a'),
-        'issn':'',
+        'issn':get_issn(soup),
         'publication_type':get_data(soup, 'Publication type', 'p'),
         'widget':''
     }
