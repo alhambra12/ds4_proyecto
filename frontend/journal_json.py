@@ -4,7 +4,7 @@ import os, re, unicodedata
 from functions import load_json, save_json
 
 def unify_data(unison_json: dict, scimago_json: dict) -> dict:
-    ''' Une solo los títulos que aparecen en ambos JSONs '''
+    ''' Une las revistas que aparecen en ambos JSONs '''
     unified = {}
 
     # revistas que este en los dos jsons
