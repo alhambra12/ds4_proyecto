@@ -67,6 +67,21 @@ def get_data(soup: BeautifulSoup, heading_text:str, html_tag:str, class_=None) -
         return text.text.strip() if text else None
     return None
 
+def get_subject_area_and_category(soup: BeautifulSoup) -> list:
+    ''' Función que obtiene el area y categorias '''
+    result = {}
+    heading = soup.find('h2', string='Subject Area and Category')
+    if not heading:
+        return None
+    for area_li in heading.find_all_next('li', style="display: inline-block;"):
+        area_tag = area_li.find('a')
+        category_ul = area_li.find('ul', class_='treecategory')
+        if area_tag and category_ul:
+            area = area_tag.text.strip()
+            categories = [cat.text.strip() for cat in category_ul.find_all('a')]
+            result[area] = categories
+    return result
+
 def get_journal_data(url:str) -> dict:
     ''' Función que obtiene los datos de una revista '''
     
@@ -81,7 +96,7 @@ def get_journal_data(url:str) -> dict:
     data = {
         'website':get_website(soup),
         'h_index':get_data(soup, 'H-Index', 'p', 'hindexnumber'),
-        'subjet_area_and_category':'',
+        'subjet_area_and_category':get_subject_area_and_category(soup),
         'publisher':get_data(soup, 'Publisher', 'a'),
         'issn':'',
         'publication_type':get_data(soup, 'Publication type', 'p'),
