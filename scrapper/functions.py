@@ -118,6 +118,11 @@ def get_journal_data(url:str) -> dict:
         'publication_type':get_data(soup, 'Publication type', 'p'),
         'widget':get_widget(soup)
     }
+    faltantes = [x for x, y in data.items() if y is None]
+    if faltantes:
+        print(f"! Datos faltantes: {', '.join(faltantes)}")
+    else:
+        print(f"O Datos extraídos correctamente.")
     return data
 
 if __name__ == '__main__':
