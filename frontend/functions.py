@@ -28,6 +28,13 @@ def paginate(journals, page, per_page=20):
     end = start + per_page
     return journals[start:end], total_pages
 
+def get_authors():
+    return [
+        'Pedro Alan Escobedo Salazar',
+        'Alejandro Leyva',
+        'Alex Pacheco'
+    ]
+
 def load_journals(path: str) -> list:
     ''' Crea una lista con la clase Journal '''
     journal_json = load_json(path)
