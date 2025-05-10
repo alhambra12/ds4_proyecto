@@ -12,6 +12,10 @@ def load_json(path: str) -> dict:
     with open(path, 'r', encoding='utf8') as f:
         return json.load(f)
     
+def save_json(data, path: str) -> None:
+    with open(path, 'w', encoding='utf8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    
 def scrap(url) -> requests.Response:
     ''' Función para obtener la pagina web desde internet '''
     page = requests.get(url, headers=headers, timeout=15)
@@ -122,7 +126,7 @@ def get_journal_data(url:str) -> dict:
     if faltantes:
         print(f"! Datos faltantes: {', '.join(faltantes)}")
     else:
-        print(f"O Datos extraídos correctamente.")
+        print(f"Datos extraídos correctamente.")
     return data
 
 if __name__ == '__main__':
