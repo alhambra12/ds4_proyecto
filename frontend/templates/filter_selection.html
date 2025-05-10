@@ -2,11 +2,11 @@
 
 {% block title %}
 
-{% if option_type == 'areas' %}
-    Journal Database - Áreas
-{% else %}
-    Journal Database - Catálogos
-{% endif %}
+    {% if option_type == 'areas' %}
+        Journal Database - Áreas
+    {% else %}
+        Journal Database - Catálogos
+    {% endif %}
 
 {% endblock %}
 

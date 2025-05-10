@@ -1,50 +1,85 @@
 {% extends "base.html" %}
+
 {% block title %}Journal Database - {{ journal.title }}{% endblock %}
+
 {% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">{{ journal.title }}</h1>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ journal.title }}</title>
-</head>
-<body>
-    <h1>{{ journal.title }}</h1>
-    <p>ID: {{ journal.id }}</p>
-    <p>H-index: {{ journal.h_index }}</p>
-    <p>Sitio web: <a href="{{ journal.website }}" target="_blank">{{ journal.website }}</a></p>
-    <p>Publisher: {{ journal.publisher }}</p>
-    <p>ISSN: {{ journal.issn }}</p>
-    <p>Widget: {{ journal.widget }}</p>
-    <p>Tipo de publicación: {{ journal.publication_type }}</p>
+    {% if journal.h_index %}
+        <h4 class="mt-4">H-index</h4>
+        <p>{{ journal.h_index }}</p>
+    {% endif %}
 
-    <h3>Áreas:</h3>
-    <ul>
-        {% for area in journal.areas %}
-        <li>{{ area }}</li>
+    {% if journal.website %}
+        <h4 class="mt-4">Sitio web</h4>
+        <p>
+            <a href="{{ journal.website }}" target="_blank" rel="noopener noreferrer">
+                {{ journal.website }}
+            </a>
+        </p>
+    {% endif %}
+
+    {% if journal.publisher %}
+        <h4 class="mt-4">Editorial</h4>
+        <p>{{ journal.publisher }}</p>
+    {% endif %}
+
+    {% if journal.issn %}
+        <h4 class="mt-4">ISSN</h4>
+        {% for issn in journal.issn %}
+            <li><a>{{ issn }}</a></li>
         {% endfor %}
-    </ul>
+    {% endif %}
 
-    <h3>Catálogos:</h3>
-    <ul>
-        {% for catalog in journal.catalogs %}
-        <li>{{ catalog }}</li>
-        {% endfor %}
-    </ul>
 
-    <h3>Área y Categorías:</h3>
-    <ul>
-        {% for subjet_area_and_category in journal.subjet_area_and_category %}
-        <li><strong>{{ subjet_area_and_category.area }}</strong>
-            <ul>
-                {% for categoria in subjet_area_and_category.categorias %}
-                <li>{{ categoria }}</li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
 
+
+    {% if journal.publication_type %}
+        <h4 class="mt-4">Tipo de publicación</h4>
+        <p>{{ journal.publication_type }}</p>
+    {% endif %}
+
+    {% if journal.widget %}
+        <h4 class="mt-4">Widget</h4>
+        <div>{{ journal.widget|safe }}</div>
+    {% endif %}
+
+    {% if journal.areas %}
+        <h4 class="mt-4">Áreas</h4>
+        <ul>
+            {% for area in journal.areas %}
+                <li>
+                    <a href="/areas/{{ area }}?pagina=1" class="text-decoration-none">{{ area }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if journal.catalogs %}
+        <h4 class="mt-4">Catálogos</h4>
+        <ul>
+            {% for catalog in journal.catalogs %}
+                <li>
+                    <a href="/catalogos/{{ catalog }}?pagina=1" class="text-decoration-none">{{ catalog }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if journal.subjet_area_and_category %}
+        <h4 class="mt-4">Áreas y Categorías (SCIMAGO)</h4>
+        <ul>
+            {% for area, categorias in journal.subjet_area_and_category.items() %}
+                <li><strong>{{ area }}</strong>
+                    <ul>
+                        {% for categoria in categorias %}
+                            <li>{{ categoria }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
 {% endblock %}
