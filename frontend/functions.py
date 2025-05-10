@@ -20,14 +20,13 @@ def check_path(path:str) -> bool:
         print(f"\nArchivo encontrado en '{path}'.")
         return True
 
-def paginate(items, page, per_page=20):
-    """ Devuelve una porción de items según la página y el total de páginas """
-    total = len(items)
+def paginate(journals, page, per_page=20):
+    ''' Devuelve revistas en una página y el total de páginas '''
+    total = len(journals)
     total_pages = (total + per_page - 1) // per_page
     start = (page - 1) * per_page
     end = start + per_page
-    return items[start:end], total_pages
-
+    return journals[start:end], total_pages
 
 def load_journals(path: str) -> list:
     ''' Crea una lista con la clase Journal '''
