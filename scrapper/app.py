@@ -19,7 +19,7 @@ def process_journal(journal_title, max_retries=3):
                 print(f"X No se pudieron extraer datos para '{journal_title}'.")
         return (journal_title, None)
     
-def main(input_path:str, output_path:str, num_workers=3):
+def main(input_path:str, output_path:str, workers: int = None):
 
     # verificar si el archivo de entrada existe
     if not os.path.exists(input_path):
@@ -40,6 +40,9 @@ def main(input_path:str, output_path:str, num_workers=3):
     # cargar json
     journal_json = load_json(input_path)
 
+    # numero de workers 
+    num_workers = workers if workers else min(3, cpu_count())
+
     # procesamiento en paralelo
     with Pool(num_workers) as pool:
         results = pool.map(process_journal, journal_json.keys())
@@ -59,7 +62,7 @@ if __name__ == '__main__':
     parser.add_argument('--datos_dir_path', type=str, help='Ruta de la carpeta datos')
     parser.add_argument('--input_filename', type=str, help='Archivo de entrada')
     parser.add_argument('--output_filename', type=str, help='Archivo de salida')
-    parser.add_argument('--workers', type=int, default=3)
+    parser.add_argument('--workers', type=int, default=3, help='Numero de workers paralelos')
     args = parser.parse_args()
 
     datos_dir_path = args.datos_dir_path or os.path.join(os.path.dirname(__file__), '..', 'datos')
@@ -70,4 +73,4 @@ if __name__ == '__main__':
     input_path = os.path.join(json_dir_path, input_filename)
     output_path = os.path.join(json_dir_path, output_filename)
 
-    main(input_path, output_path)
+    main(input_path, output_path, args.workers)
