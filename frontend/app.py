@@ -8,8 +8,6 @@ from flask import Flask, render_template, request
 def create_app(journals):
     app = Flask(__name__)
 
-    per_page = 20
-
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -28,7 +26,7 @@ def create_app(journals):
 
     @app.route('/areas/<area>')
     def journals_area(area):
-        page = int(request.args.get('page', 1))
+        page = int(request.args.get('pagina', 1))
         journals_by_area = [j for j in journals if area in j.areas]
         paginated, total_pages = paginate(journals_by_area, page)
 
@@ -50,7 +48,7 @@ def create_app(journals):
 
     @app.route('/catalogos/<catalogs>')
     def journals_catalog(catalogs):
-        page = int(request.args.get('page', 1))
+        page = int(request.args.get('pagina', 1))
         journals_by_catalog = [j for j in journals if catalogs in j.catalogs]
         paginated, total_pages = paginate(journals_by_catalog, page)
 
@@ -59,6 +57,31 @@ def create_app(journals):
             journals=paginated,
             filter=catalogs,
             filter_type='catalogs',
+            page=page,
+            total_pages=total_pages
+        )
+    
+    @app.route('/explorar')
+    def explore():
+        import string
+        from flask import request, render_template
+
+        letter = request.args.get('letra', '').upper()
+        letters = list(string.ascii_uppercase)
+        page = int(request.args.get('pagina', 1))
+
+        if letter:
+            filtered = [j for j in journals if j.title.upper().startswith(letter)]
+        else:
+            filtered = journals
+
+        paginated, total_pages = paginate(filtered, page)
+
+        return render_template(
+            'explore.html',
+            letters=letters,
+            selected_letter=letter,
+            journals=paginated,
             page=page,
             total_pages=total_pages
         )
