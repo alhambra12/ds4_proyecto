@@ -12,7 +12,7 @@ def create_app(journals):
     def index():
         return render_template('index.html')
 
-    @app.route('/revistas/<id_journal>')
+    @app.route('/revistas/<id_journal>', methods=['GET'])
     def journal(id_journal):
         journal = next((j for j in journals if j.id == id_journal), None)
         return render_template('journal.html', journal=journal)
@@ -74,6 +74,7 @@ def create_app(journals):
             filtered = [j for j in journals if j.title.upper().startswith(letter)]
         else:
             filtered = journals
+        filtered.sort(key=lambda r: r.title.lower())
 
         paginated, total_pages = paginate(filtered, page)
 
@@ -82,6 +83,26 @@ def create_app(journals):
             letters=letters,
             selected_letter=letter,
             journals=paginated,
+            page=page,
+            total_pages=total_pages
+        )
+    
+    @app.route('/busqueda')
+    def search():
+        search_text = request.args.get('q', '').strip()
+        page = int(request.args.get('pagina', 1))
+        filtered = []
+
+        if search_text:
+            filtered = [r for r in journals if search_text.lower() in (r.title or '').lower()]
+            filtered.sort(key=lambda r: r.title.lower())
+
+        paginated, total_pages = paginate(filtered, page)
+
+        return render_template(
+            'search.html',
+            journals=paginated,
+            search_text=search_text,
             page=page,
             total_pages=total_pages
         )
