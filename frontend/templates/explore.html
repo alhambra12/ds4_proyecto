@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Journal Database - Explorar
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">Explorar revistas por letra</h1>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        {% for letter in letters %}
+        <a href="/explorar?letra={{ letter }}"
+           class="btn {% if letter == selected_letter %}btn-primary{% else %}btn-outline-primary{% endif %}">
+            {{ letter }}
+        </a>
+        {% endfor %}
+    </div>
+
+    {% if selected_letter %}
+
+        {% if journals %}
+            <ul class="list-group">
+                {% for journal in journals %}
+                <li class="list-group-item">
+                    <h5 class="mb-1">
+                        <a href="/revistas/{{ journal.id }}" class="text-decoration-none text-primary">
+                            {{ journal.title }}
+                        </a>
+                    </h5>
+                    {% if journal.h_index %}
+                    <p class="mb-0"><strong>H-index:</strong> {{ journal.h_index }}</p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-warning mt-4">No se encontraron revistas que comiencen con "{{ selected_letter }}".</div>
+        {% endif %}
+
+        {% if total_pages > 1 %}
+            <nav aria-label="Paginación" class="mt-4">
+            <ul class="pagination justify-content-center">
+
+                {% if page > 1 %}
+                <li class="page-item">
+                <a class="page-link" href="?letra={{ selected_letter }}&pagina={{ page - 1 }}" aria-label="Anterior">
+                    &laquo; Anterior
+                </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                <span class="page-link">&laquo; Anterior</span>
+                </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                <span class="page-link">Página {{ page }} de {{ total_pages }}</span>
+                </li>
+
+                {% if page < total_pages %}
+                <li class="page-item">
+                <a class="page-link" href="?letra={{ selected_letter }}&pagina={{ page + 1 }}" aria-label="Siguiente">
+                    Siguiente &raquo;
+                </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                <span class="page-link">Siguiente &raquo;</span>
+                </li>
+            {% endif %}
+
+        </ul>
+        </nav>
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}
