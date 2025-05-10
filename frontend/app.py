@@ -2,7 +2,7 @@
 
 import os, argparse
 from journal_json import gen_journal_json
-from functions import load_journals, check_path, paginate
+from functions import load_journals, check_path, paginate, get_authors
 from flask import Flask, render_template, request
 
 def create_app(journals):
@@ -85,6 +85,11 @@ def create_app(journals):
             page=page,
             total_pages=total_pages
         )
+    
+    @app.route('/creditos')
+    def credits():
+        authors = get_authors()
+        return render_template('credits.html', authors=authors)
 
     return app
 
