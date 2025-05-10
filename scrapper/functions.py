@@ -59,6 +59,14 @@ def get_website(soup: BeautifulSoup) -> str:
                 return a['href'].strip()
     return None
 
+def get_data(soup: BeautifulSoup, heading_text:str, html_tag:str, class_=None) -> str:
+    ''' Función que busca datos '''
+    heading = soup.find('h2', string=heading_text)
+    if heading:
+        text = heading.find_next(html_tag, class_=class_) if class_ else heading.find_next(html_tag)
+        return text.text.strip() if text else None
+    return None
+
 def get_journal_data(url:str) -> dict:
     ''' Función que obtiene los datos de una revista '''
     
@@ -72,11 +80,11 @@ def get_journal_data(url:str) -> dict:
     # obtiene datos de la revista
     data = {
         'website':get_website(soup),
-        'h_index':'',
+        'h_index':get_data(soup, 'H-Index', 'p', 'hindexnumber'),
         'subjet_area_and_category':'',
-        'publisher':'',
+        'publisher':get_data(soup, 'Publisher', 'a'),
         'issn':'',
-        'publication_type':'',
+        'publication_type':get_data(soup, 'Publication type', 'p'),
         'widget':''
     }
     return data
