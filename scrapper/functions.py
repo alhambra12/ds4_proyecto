@@ -89,6 +89,15 @@ def get_issn(soup: BeautifulSoup) -> list:
         return [issn.strip() for issn in text.split(',')] if text else None
     return None
 
+def get_widget(soup: BeautifulSoup) -> str:
+    ''' Función que obtiene el widget '''
+    widget_div = soup.find('div', class_='widgetlegend')
+    if widget_div:
+        input_tag = widget_div.find('input', id='embed_code')
+        if input_tag and input_tag.has_attr('value'):
+            return input_tag['value']
+    return None
+
 def get_journal_data(url:str) -> dict:
     ''' Función que obtiene los datos de una revista '''
     
@@ -107,7 +116,7 @@ def get_journal_data(url:str) -> dict:
         'publisher':get_data(soup, 'Publisher', 'a'),
         'issn':get_issn(soup),
         'publication_type':get_data(soup, 'Publication type', 'p'),
-        'widget':''
+        'widget':get_widget(soup)
     }
     return data
 
