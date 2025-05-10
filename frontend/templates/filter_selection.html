@@ -25,7 +25,7 @@
 
     <ul class="list-group">
         {% for filter in filter_list %}
-        <li class="list-group-item">
+        <li class="list-group-item mb-3">
             {% if filter_type == 'areas' %}
                 <a href="/areas/{{ filter }}?pagina=1" class="text-decoration-none">
                     {{ filter }}

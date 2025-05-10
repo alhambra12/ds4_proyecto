@@ -6,9 +6,10 @@
 
 {% block body %}
 <div class="container mt-5">
-    <h1 class="mb-4">Explorar revistas por letra</h1>
 
-    <div class="d-flex flex-wrap gap-2 mb-4">
+    <h1 class="mb-4">Explorar revistas por letra inicial </h1>
+
+    <div class="gap-1 mb-4">
         {% for letter in letters %}
         <a href="/explorar?letra={{ letter }}"
            class="btn {% if letter == selected_letter %}btn-primary{% else %}btn-outline-primary{% endif %}">
@@ -19,23 +20,51 @@
 
     {% if selected_letter %}
 
+        <h2 class="mb-4">Revistas por la letra inicial: {{ selected_letter }}</h2>
+
         {% if journals %}
             <ul class="list-group">
                 {% for journal in journals %}
-                <li class="list-group-item">
+                <li class="list-group-item mb-3">
                     <h5 class="mb-1">
-                        <a href="/revistas/{{ journal.id }}" class="text-decoration-none text-primary">
+                        <a href="/revista/{{ journal.id }}" class="text-decoration-none text-primary">
                             {{ journal.title }}
                         </a>
                     </h5>
+
+                    {% if journal.catalogs %}
+                    <p class="mb-1">
+                        <strong>Catálogos:</strong>
+                        {% for catalog in journal.catalogs %}
+                            <a href="/catalogos/{{ catalog }}" class="text-decoration-none">
+                                {{ catalog }}
+                            </a>
+                            {% if not loop.last %}
+                            , 
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+
+                    {% if journal.areas %}
+                    <p class="mb-1">
+                        <strong>Áreas:</strong>
+                        {% for area in journal.areas %}
+                            <a href="/areas/{{ area }}" class="text-decoration-none">{{ area }}</a>
+                            {% if not loop.last %}
+                            , 
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+
                     {% if journal.h_index %}
                     <p class="mb-0"><strong>H-index:</strong> {{ journal.h_index }}</p>
                     {% endif %}
                 </li>
                 {% endfor %}
-            </ul>
-        {% else %}
-            <div class="alert alert-warning mt-4">No se encontraron revistas que comiencen con "{{ selected_letter }}".</div>
+            {% else %}
+                <div class="alert alert-warning mt-4">No se encontraron revistas que comiencen con "{{ selected_letter }}".</div>
         {% endif %}
 
         {% if total_pages > 1 %}
