@@ -41,7 +41,7 @@
 
     {% if page > 1 %}
     <li class="page-item">
-      <a class="page-link" href="?page={{ page - 1 }}" aria-label="Anterior">
+      <a class="page-link" href="?pagina={{ page - 1 }}" aria-label="Anterior">
         &laquo; Anterior
       </a>
     </li>
@@ -57,7 +57,7 @@
 
     {% if page < total_pages %}
     <li class="page-item">
-      <a class="page-link" href="?page={{ page + 1 }}" aria-label="Siguiente">
+      <a class="page-link" href="?pagina={{ page + 1 }}" aria-label="Siguiente">
         Siguiente &raquo;
       </a>
     </li>
