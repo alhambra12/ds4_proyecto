@@ -40,6 +40,7 @@ def main(input_path:str, output_path:str):
     # guardar json
     save_json(journal_data, output_path)
     print(f"\nArchivo JSON guardado en '{output_path}'.")
+    print(f"Se procesaron {len(journal_data)}/{len(journal_json)} revistas.")
     print("\nPrograma finalizado.\n")
 
 if __name__ == '__main__':
