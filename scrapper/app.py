@@ -1,9 +1,25 @@
 ''' Programa scrapper para scimagojr.com '''
 
 import argparse, os
+from multiprocessing import Pool, cpu_count
 from functions import load_json, find_journal_url, get_journal_data, save_json
 
-def main(input_path:str, output_path:str):
+def process_journal(journal_title, max_retries=3):
+    '''Funcion para procesar una revista'''
+    attempts = 0
+    while attempts < max_retries:
+        attempts += 1
+        print(f"\n- Procesando: {journal_title}")
+        journal_url = find_journal_url(journal_title)
+        if journal_url:
+            data = get_journal_data(journal_url)
+            if data:
+                return (journal_title, data)
+            else: 
+                print(f"X No se pudieron extraer datos para '{journal_title}'.")
+        return (journal_title, None)
+    
+def main(input_path:str, output_path:str, num_workers=3):
 
     # verificar si el archivo de entrada existe
     if not os.path.exists(input_path):
@@ -24,20 +40,14 @@ def main(input_path:str, output_path:str):
     # cargar json
     journal_json = load_json(input_path)
 
-    # buscar y obtener datos de cada revista
-    journal_data = {}
-    print("\nProcesando revistas:")
-    for journal_title in journal_json:
-        print(f"\n- Procesando: {journal_title}")
-        journal_url = find_journal_url(journal_title)
-        if journal_url:
-            data = get_journal_data(journal_url)
-            if data:
-                journal_data[journal_title] = data
-            else:
-                print(f"X No se pudieron extraer datos para '{journal_title}'.")
-                
-    # guardar json
+    # procesamiento en paralelo
+    with Pool(num_workers) as pool:
+        results = pool.map(process_journal, journal_json.keys())
+
+    # combinamos resultados
+    journal_data = {k: v for k, v in results if v is not None}
+
+    # guardar json  
     save_json(journal_data, output_path)
     print(f"\nArchivo JSON guardado en '{output_path}'.")
     print(f"Se procesaron {len(journal_data)}/{len(journal_json)} revistas.")
@@ -49,6 +59,7 @@ if __name__ == '__main__':
     parser.add_argument('--datos_dir_path', type=str, help='Ruta de la carpeta datos')
     parser.add_argument('--input_filename', type=str, help='Archivo de entrada')
     parser.add_argument('--output_filename', type=str, help='Archivo de salida')
+    parser.add_argument('--workers', type=int, default=3)
     args = parser.parse_args()
 
     datos_dir_path = args.datos_dir_path or os.path.join(os.path.dirname(__file__), '..', 'datos')

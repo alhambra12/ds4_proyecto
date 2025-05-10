@@ -1,4 +1,4 @@
-import json, requests, Levenshtein
+import json, requests, Levenshtein, time, random
 from bs4 import BeautifulSoup
 headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36' 
@@ -18,10 +18,16 @@ def save_json(data, path: str) -> None:
     
 def scrap(url) -> requests.Response:
     ''' Función para obtener la pagina web desde internet '''
-    page = requests.get(url, headers=headers, timeout=15)
-    if page.status_code != 200:
-        raise Exception(f"X Error: {page.status_code} en '{url}'")
-    return page
+    time.sleep(random.uniform(0.5,2))
+    try:
+        page = requests.get(url, headers=headers, timeout=15)
+        if page.status_code != 200:
+            time.sleep(5)
+            return scrap(url)
+        return page
+    except Exception as e: 
+        time.sleep(2)
+        raise e
 
 def find_journal_url(title:str) -> str:
     ''' Función que devuelve la url de una revista a partir de su nombre '''
