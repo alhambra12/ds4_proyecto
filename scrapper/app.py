@@ -1,7 +1,7 @@
 ''' Programa scrapper para scimagojr.com '''
 
 import argparse, os
-import functions as fn
+from functions import load_json, save_json, find_journal_url, get_journal_data
 
 def main(input_path:str, output_path:str):
 
@@ -22,7 +22,21 @@ def main(input_path:str, output_path:str):
             return
     
     # cargar json
-    journal_json = fn.load_json(input_path)
+    journal_json = load_json(input_path)
+
+        # buscar y obtener datos de cada revista
+    journal_data = {}
+    print("\nProcesando revistas:")
+    for journal_title in journal_json:
+        print(f"\n- Procesando: {journal_title}")
+        journal_url = find_journal_url(journal_title)
+        if journal_url:
+            data = get_journal_data(journal_url)
+            if data:
+                journal_data[journal_title] = data
+            else:
+                print(f"X No se pudieron extraer datos para '{journal_title}'.")
+                
 
 if __name__ == '__main__':
     
