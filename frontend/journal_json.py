@@ -8,6 +8,7 @@ def unify_data(unison_json: dict, scimago_json: dict) -> dict:
     ''' Une las revistas que aparecen en ambos JSONs '''
     unified = {}
 
+    # revistas que este en los dos jsons
     common_titles = set(unison_json) & set(scimago_json)
 
     today = str(date.today())

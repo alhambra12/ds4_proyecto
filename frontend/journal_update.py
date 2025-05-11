@@ -41,7 +41,7 @@ def update_data(journal_id: str, journals: list, journals_json_path: str):
 
     # Guardar en el JSON
     try:
-        journals_dict = {j.title: j.to_dict() for j in journals}  # Convertir objetos a diccionarios
+        journals_dict = {j.title: j.to_dict() for j in journals}
         with open(journals_json_path, 'w', encoding='utf-8') as f:
             json.dump(journals_dict, f, ensure_ascii=False, indent=2)
         print(f"> Datos de '{journal_name}' actualizados y guardados.")

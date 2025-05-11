@@ -1,84 +1,13 @@
 '''  Programa frontend de revistas '''
 
-import os, argparse, datetime
+import os, argparse
 from journal_json import gen_journal_json
-from journal_update import check_last_visit
 from functions import load_journals, check_path, paginate, get_authors, get_search_results
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_sqlalchemy import SQLAlchemy
-from database import db, User
+from flask import Flask, render_template, request
 
-def create_app(journals, journals_json_path):
+def create_app(journals):
     app = Flask(__name__)
-    app.secret_key = '1234' 
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.init_app(app)
-
-    login_manager = LoginManager()
-    login_manager.init_app(app)
-    login_manager.login_view = 'login'  
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
-
-    @app.route('/login', methods=['GET', 'POST'])
-    def login():
-        if current_user.is_authenticated:  
-            return redirect(url_for('index'))
-
-        if request.method == 'POST':
-            username = request.form['username']
-            password = request.form['password']
-            user = User.query.filter_by(username=username).first()
-
-            if user and user.check_password(password):
-                login_user(user) 
-                next_page = request.args.get('next')
-                flash('¡Bienvenido! Has iniciado sesión correctamente.', 'success')
-                return redirect(next_page) if next_page else redirect(url_for('index'))
-            else:
-                flash('Usuario o contraseña incorrectos.', 'danger')
-
-        return render_template('login.html')
-
-    @app.route('/logout')
-    @login_required 
-    def logout():
-        logout_user()  
-        flash('Has cerrado sesión correctamente.', 'info')
-        return redirect(url_for('index'))
-
-    @app.route('/register', methods=['GET', 'POST'])
-    def register():
-        if current_user.is_authenticated:
-            return redirect(url_for('index'))
-
-        if request.method == 'POST':
-            username = request.form['username']
-            password = request.form['password']
-
-            if not username or not password:
-                flash('Por favor completa todos los campos', 'danger')
-                return redirect(url_for('register'))
-
-            if User.query.filter_by(username=username).first():
-                flash('Este nombre de usuario ya está en uso.', 'danger')
-                return redirect(url_for('register'))
-
-            new_user = User(username=username)
-            new_user.set_password(password)  
-            db.session.add(new_user)
-            db.session.commit()
-
-            flash('¡Registro exitoso! Por favor inicia sesión.', 'success')
-            return redirect(url_for('login'))
-
-        return render_template('register.html')
-    
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -86,7 +15,6 @@ def create_app(journals, journals_json_path):
     @app.route('/revistas/<id_journal>')
     def journal(id_journal):
         journal = next((j for j in journals if j.id == id_journal), None)
-        check_last_visit(journal, journals, journals_json_path)
         return render_template('journal.html', journal=journal)
 
     @app.route('/areas')
@@ -220,8 +148,6 @@ def main(json_dir_path, unison_json_filename, scimago_json_filename):
 
     print('\nIniciando app Flask.\n')
     app = create_app(journals, journals_json_path)
-    with app.app_context():
-        db.create_all()
     app.run(debug=True) 
 
 if __name__ == '__main__':
