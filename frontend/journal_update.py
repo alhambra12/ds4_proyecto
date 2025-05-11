@@ -8,13 +8,11 @@ headers = {
 scimagojr_search_url = 'https://www.scimagojr.com/journalsearch.php?q='
 scimagojr_url = 'https://www.scimagojr.com'
 
-
 def check_last_visit(journal, journals, journals_json_path):
     if journal and hasattr(journal, 'last_visit') and journal.last_visit:
         last_visit_date = datetime.strptime(journal.last_visit, '%Y-%m-%d')
         if datetime.now() - last_visit_date > timedelta(days=30):
             update_data(journal.id, journals, journals_json_path)
-
 
 def update_data(journal_id: str, journals: list, journals_json_path: str):
     journal_obj = next((j for j in journals if j.id == journal_id), None)
@@ -22,7 +20,7 @@ def update_data(journal_id: str, journals: list, journals_json_path: str):
         print(f"X No se encontró la revista con ID '{journal_id}'")
         return
 
-    journal_name = journal_obj.title  # Uso del atributo title
+    journal_name = journal_obj.title
     print(f"> Actualizando datos de: {journal_name}")
 
     url = find_journal_url(journal_name)
@@ -32,7 +30,6 @@ def update_data(journal_id: str, journals: list, journals_json_path: str):
 
     new_data = get_journal_data(url)
 
-    # Actualiza atributos del objeto
     journal_obj.website = new_data.get('website')
     journal_obj.h_index = new_data.get('h_index')
     journal_obj.subjet_area_and_category = new_data.get('subjet_area_and_category')
@@ -42,7 +39,7 @@ def update_data(journal_id: str, journals: list, journals_json_path: str):
     journal_obj.widget = new_data.get('widget')
     journal_obj.last_visit = datetime.now().strftime('%Y-%m-%d')
 
-    # Guardar en JSON
+    # Guardar en el JSON
     try:
         journals_dict = {j.title: j.to_dict() for j in journals}  # Convertir objetos a diccionarios
         with open(journals_json_path, 'w', encoding='utf-8') as f:
@@ -50,7 +47,6 @@ def update_data(journal_id: str, journals: list, journals_json_path: str):
         print(f"> Datos de '{journal_name}' actualizados y guardados.")
     except Exception as e:
         print(f"X Error guardando el archivo: {e}")
-
 
 def scrap(url) -> requests.Response:
     ''' Función para obtener la pagina web desde internet '''
@@ -64,7 +60,6 @@ def scrap(url) -> requests.Response:
     except Exception as e:
         time.sleep(2)
         raise e
-
 
 def find_journal_url(title: str) -> str:
     ''' Función que devuelve la url de una revista a partir de su nombre '''
@@ -97,7 +92,6 @@ def find_journal_url(title: str) -> str:
     print(f"URL encontrada: '{results[best_result]}'")
     return results[best_result]
 
-
 def get_website(soup: BeautifulSoup) -> str:
     ''' Función que obtiene la pagina web '''
     heading = soup.find('h2', string='Information')
@@ -107,7 +101,6 @@ def get_website(soup: BeautifulSoup) -> str:
                 return a['href'].strip()
     return None
 
-
 def get_data(soup: BeautifulSoup, heading_text: str, html_tag: str, class_=None) -> str:
     ''' Función que busca datos '''
     heading = soup.find('h2', string=heading_text)
@@ -115,7 +108,6 @@ def get_data(soup: BeautifulSoup, heading_text: str, html_tag: str, class_=None)
         text = heading.find_next(html_tag, class_=class_) if class_ else heading.find_next(html_tag)
         return text.text.strip() if text else None
     return None
-
 
 def get_subject_area_and_category(soup: BeautifulSoup) -> list:
     ''' Función que obtiene el area y categorias '''
@@ -132,14 +124,12 @@ def get_subject_area_and_category(soup: BeautifulSoup) -> list:
             result[area] = categories
     return result
 
-
 def get_issn(soup: BeautifulSoup) -> list:
     ''' Función que obtiene el issn '''
     text = get_data(soup, 'ISSN', 'p')
     if text:
         return [issn.strip() for issn in text.split(',')] if text else None
     return None
-
 
 def get_widget(soup: BeautifulSoup) -> str:
     ''' Función que obtiene el widget '''
@@ -149,7 +139,6 @@ def get_widget(soup: BeautifulSoup) -> str:
         if input_tag and input_tag.has_attr('value'):
             return input_tag['value']
     return None
-
 
 def get_journal_data(url: str) -> dict:
     ''' Función que obtiene los datos de una revista '''
