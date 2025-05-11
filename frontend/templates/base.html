@@ -30,23 +30,6 @@
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <ul class="navbar-nav ml-auto">
-                {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <span class="navbar-text mr-2">Hola, {{ current_user.username }}</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path.startswith('/logout') or request.path.startswith('/logout')%}active fw-bold{% endif %}" href="/logout">Cerrar Sesion</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path.startswith('/login') or request.path.startswith('/login')%}active fw-bold{% endif %}" href="/login">Iniciar Sesion</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path.startswith('/register') or request.path.startswith('/register')%}active fw-bold{% endif %}" href="/register">Registrarse</a>
-                    </li>
-                {% endif %}
-            </ul>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">

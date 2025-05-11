@@ -1,11 +1,12 @@
 '''  Programa frontend de revistas '''
 
 import os, argparse
+from journal_update import check_last_visit
 from journal_json import gen_journal_json
 from functions import load_journals, check_path, paginate, get_authors, get_search_results
 from flask import Flask, render_template, request
 
-def create_app(journals):
+def create_app(journals, journals_json_path):
     app = Flask(__name__)
 
     @app.route('/')
@@ -15,7 +16,9 @@ def create_app(journals):
     @app.route('/revistas/<id_journal>')
     def journal(id_journal):
         journal = next((j for j in journals if j.id == id_journal), None)
+        check_last_visit(journal, journals, journals_json_path)
         return render_template('journal.html', journal=journal)
+
 
     @app.route('/areas')
     def areas():
