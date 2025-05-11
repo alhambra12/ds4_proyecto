@@ -57,7 +57,7 @@ def find_journal_url(title:str) -> str:
     if ratio < 0.9:
         print(f"X No hay resultados similares a '{title}'")
         return None
-    print(f"URL encontrada: '{results[best_result]}'")
+    print(f"O URL encontrada para '{title}': '{results[best_result]}'")
     return results[best_result]
 
 def get_website(soup: BeautifulSoup) -> str:
@@ -108,7 +108,7 @@ def get_widget(soup: BeautifulSoup) -> str:
             return input_tag['value']
     return None
 
-def get_journal_data(url:str) -> dict:
+def get_journal_data(url:str, title:str) -> dict:
     ''' Función que obtiene los datos de una revista '''
     
     # busca la revista en scimagojr
@@ -130,14 +130,14 @@ def get_journal_data(url:str) -> dict:
     }
     faltantes = [x for x, y in data.items() if y is None]
     if faltantes:
-        print(f"! Datos faltantes: {', '.join(faltantes)}")
+        print(f"! Datos faltantes para '{title}': {', '.join(faltantes)}")
     else:
-        print(f"Datos extraídos correctamente.")
+        print(f"Datos de '{title}' extraídos correctamente.")
     return data
 
 if __name__ == '__main__':
     title = 'Facta Universitatis, Series: Mechanical Engineering'
     url = find_journal_url(title)
     if url:
-        data = get_journal_data(url)
+        data = get_journal_data(url, title)
         print(data)

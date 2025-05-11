@@ -92,7 +92,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     datos_dir_path = args.datos_dir_path or os.path.join(os.path.dirname(__file__), '..', 'datos')
-    output_filename = args.output_filename or 'revistas_unison.json'
+    output_filename = args.output_filename or 'revistas_unison_test.json'
     
     datos_dir_path = os.path.normpath(datos_dir_path)
     csv_dir_path = os.path.join(datos_dir_path, 'csv')
