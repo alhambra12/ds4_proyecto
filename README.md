@@ -19,8 +19,8 @@ python ./json_gen/app.py --datos_dir_path ./datos --output_filename revistas_uni
 ```
 
 Parámetros:
---datos_dir_path: Ruta a la carpeta datos.
---output_filename: Nombre del archivo de salida.
+* --datos_dir_path: Ruta a la carpeta datos.
+* --output_filename: Nombre del archivo de salida.
 
 ### 2. Programa web scrapper
 
@@ -29,10 +29,10 @@ python ./scraper/app.py --datos_dir_path ./datos --input_filename revistas_uniso
 ```
 
 Parámetros:
---datos_dir_path: Ruta a la carpeta datos.
---input_filename: Nombre del archivo de entrada.
---output_filename: Nombre del archivo de salida.
---workers: Número de procesos paralelos.
+* --datos_dir_path: Ruta a la carpeta datos.
+* --input_filename: Nombre del archivo de entrada.
+* --output_filename: Nombre del archivo de salida.
+* --workers: Número de procesos paralelos.
 
 ### 3. Programa front-end
 
@@ -41,6 +41,6 @@ python ./frontend/app.py --json_dir_path ./datos/json --unison_json_filename rev
 ```
 
 Parámetros:
---json_dir_path: Directorio donde están los JSONs.
---unison_json_filename: Nombre del JSON con los datos originales de la universidad.
---scimago_json_filename: Nombre del JSON con los datos obtenidos desde SCImago.
+* --json_dir_path: Directorio donde están los JSONs.
+* --unison_json_filename: Nombre del JSON con los datos originales de la universidad.
+* --scimago_json_filename: Nombre del JSON con los datos obtenidos desde SCImago.
