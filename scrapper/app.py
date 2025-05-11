@@ -68,8 +68,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     datos_dir_path = args.datos_dir_path or os.path.join(os.path.dirname(__file__), '..', 'datos')
-    input_filename = args.input_filename or 'revistas_unison_part1.json'
-    output_filename = args.output_filename or 'revistas_scimagojr_test.json'
+    input_filename = args.input_filename or 'revistas_unison.json'
+    output_filename = args.output_filename or 'revistas_scimagojr.json'
 
     json_dir_path = os.path.normpath(os.path.join(datos_dir_path, 'json'))
     input_path = os.path.join(json_dir_path, input_filename)
