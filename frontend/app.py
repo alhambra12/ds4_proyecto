@@ -2,13 +2,14 @@
 
 import os, argparse, datetime
 from journal_json import gen_journal_json
+from journal_update import check_last_visit
 from functions import load_journals, check_path, paginate, get_authors, get_search_results
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
 from database import db, User
 
-def create_app(journals):
+def create_app(journals, journals_json_path):
     app = Flask(__name__)
     app.secret_key = '1234' 
 
@@ -85,6 +86,7 @@ def create_app(journals):
     @app.route('/revistas/<id_journal>')
     def journal(id_journal):
         journal = next((j for j in journals if j.id == id_journal), None)
+        check_last_visit(journal, journals, journals_json_path)
         return render_template('journal.html', journal=journal)
 
     @app.route('/areas')
@@ -217,9 +219,9 @@ def main(json_dir_path, unison_json_filename, scimago_json_filename):
     journals = load_journals(journals_json_path)
 
     print('\nIniciando app Flask.\n')
-    app = create_app(journals)
+    app = create_app(journals, journals_json_path)
     with app.app_context():
-        db.create_all()  
+        db.create_all
     app.run(debug=True) 
 
 if __name__ == '__main__':
