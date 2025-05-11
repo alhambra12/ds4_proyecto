@@ -1,6 +1,6 @@
 '''  Programa frontend de revistas '''
 
-import os, argparse,re 
+import os, argparse 
 from journal_json import gen_journal_json
 from functions import load_journals, check_path, paginate, get_authors, get_search_results
 from flask import Flask, render_template, request
