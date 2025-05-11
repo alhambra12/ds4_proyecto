@@ -1,8 +1,8 @@
 '''  Programa frontend de revistas '''
 
-import os, argparse
+import os, argparse,re 
 from journal_json import gen_journal_json
-from functions import load_journals, check_path, paginate, get_authors
+from functions import load_journals, check_path, paginate, get_authors, get_search_results
 from flask import Flask, render_template, request
 
 def create_app(journals):
@@ -83,12 +83,12 @@ def create_app(journals):
         page = int(request.args.get('pagina', 1))
 
         if letter:
-            filtered = [j for j in journals if j.title.upper().startswith(letter)]
+            results = [j for j in journals if j.title.upper().startswith(letter)]
         else:
-            filtered = journals
-        filtered.sort(key=lambda r: r.title.lower())
+            results = journals
+        results.sort(key=lambda r: r.title.lower())
 
-        paginated, total_pages = paginate(filtered, page)
+        paginated, total_pages = paginate(results, page)
 
         return render_template(
             'explore.html',
@@ -103,13 +103,12 @@ def create_app(journals):
     def search():
         search_text = request.args.get('q', '').strip()
         page = int(request.args.get('pagina', 1))
-        filtered = []
+        search_results = []
 
         if search_text:
-            filtered = [r for r in journals if search_text.lower() in (r.title or '').lower()]
-            filtered.sort(key=lambda r: r.title.lower())
+            search_results = get_search_results(search_text, journals)
 
-        paginated, total_pages = paginate(filtered, page)
+        paginated, total_pages = paginate(search_results, page)
 
         return render_template(
             'search.html',

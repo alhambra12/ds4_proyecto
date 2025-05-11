@@ -1,4 +1,4 @@
-import os, json
+import os, json, re
 from journal_class import Journal
 
 def load_json(path: str) -> dict:
@@ -34,6 +34,22 @@ def get_authors():
         'Alejandro Leyva',
         'Alex Pacheco'
     ]
+
+def get_search_results(search_text: str, journals: dict) -> list:
+    search_words = search_text.lower().split()
+    
+    word_dict = {}
+
+    for word in search_words:
+        word_dict[word] = [r for r in journals if re.search(r'\b' + re.escape(word) + r'\b', r.title.lower())]
+
+    found_journals = set()
+
+    for word in word_dict:
+        found_journals.update(word_dict[word])
+
+    results = sorted(list(found_journals), key=lambda r: r.title.lower())
+    return results
 
 def load_journals(path: str) -> list:
     ''' Crea una lista con la clase Journal '''
