@@ -221,7 +221,7 @@ def main(json_dir_path, unison_json_filename, scimago_json_filename):
     print('\nIniciando app Flask.\n')
     app = create_app(journals, journals_json_path)
     with app.app_context():
-        db.create_all
+        db.create_all()
     app.run(debug=True) 
 
 if __name__ == '__main__':
