@@ -1,6 +1,7 @@
 ''' Archivo para generar json de revistas para frontend '''
 
 import os, re, unicodedata
+from datetime import date
 from functions import load_json, save_json
 
 def unify_data(unison_json: dict, scimago_json: dict) -> dict:
@@ -10,9 +11,14 @@ def unify_data(unison_json: dict, scimago_json: dict) -> dict:
     # revistas que este en los dos jsons
     common_titles = set(unison_json) & set(scimago_json)
 
+    today = str(date.today())
+
     for title in sorted(common_titles):
         id_value = create_id(title)
-        data = {'id': id_value}
+        data = {
+            'id': id_value,
+            'last_visit': today
+        }
 
         data.update(unison_json[title])
         data.update(scimago_json[title])

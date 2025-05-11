@@ -82,5 +82,9 @@
             {% endfor %}
         </ul>
     {% endif %}
+
+    {% if journal.last_visit %}
+        <p class="mt-5">Ultima actualización: {{ journal.last_visit }}</p>
+    {% endif %}
 </div>
 {% endblock %}

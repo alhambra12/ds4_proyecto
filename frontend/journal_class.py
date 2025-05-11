@@ -2,8 +2,9 @@
 
 class Journal:
     ''' Constructor de la clase Journal '''
-    def __init__(self, id, title, areas, catalogs, website, h_index, subjet_area_and_category, publisher, issn, widget, publication_type):
+    def __init__(self, id, last_visit, title, areas, catalogs, website, h_index, subjet_area_and_category, publisher, issn, widget, publication_type):
         self.id = id
+        self.last_visit = last_visit
         self.title = title
         self.areas = areas
         self.catalogs = catalogs
@@ -20,6 +21,7 @@ class Journal:
         ''' Retorna un diccionario con los atributos del objeto '''
         return {
             'id': self.id,
+            'last_visit': self.last_visit,
             'title': self.title,
             'areas': self.areas,
             'catalogs': self.catalogs,

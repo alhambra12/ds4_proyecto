@@ -41,8 +41,10 @@ def load_journals(path: str) -> list:
 
     journals = []
     for title, info in sorted(journal_json.items()):
+        
         journal = Journal(
-            id=info.get('id', ''),  # Usa el id ya generado
+            id=info.get('id', ''),
+            last_visit=info.get('last_visit', ''),
             title=title,
             areas=info.get('areas', []),
             catalogs=info.get('catalogs', []),

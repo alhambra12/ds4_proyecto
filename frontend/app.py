@@ -12,7 +12,7 @@ def create_app(journals):
     def index():
         return render_template('index.html')
 
-    @app.route('/revistas/<id_journal>', methods=['GET'])
+    @app.route('/revistas/<id_journal>')
     def journal(id_journal):
         journal = next((j for j in journals if j.id == id_journal), None)
         return render_template('journal.html', journal=journal)
@@ -119,7 +119,7 @@ def main(json_dir_path, unison_json_filename, scimago_json_filename):
 
     print('\nIniciando programa.')
 
-    journals_json_filename = 'journals.json'
+    journals_json_filename = 'revistas.json'
     journals_json_path = os.path.join(json_dir_path, journals_json_filename)
     unison_json_path = os.path.join(json_dir_path, unison_json_filename)
     scimago_json_path = os.path.join(json_dir_path, scimago_json_filename)
@@ -147,8 +147,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     json_dir_path = args.json_dir_path or os.path.join(os.path.dirname(__file__), '..', 'datos', 'json')
-    unison_json_filename = args.unison_json_filename or 'revistas_unison_test.json'
-    scimago_json_filename = args.scimago_json_filename or 'revistas_scimagojr_test.json'
+    unison_json_filename = args.unison_json_filename or 'revistas_unison.json'
+    scimago_json_filename = args.scimago_json_filename or 'revistas_scimagojr.json'
 
     json_dir_path = os.path.normpath(json_dir_path)
 
