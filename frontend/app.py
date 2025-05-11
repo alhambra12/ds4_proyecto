@@ -19,15 +19,20 @@ def create_app(journals):
 
     @app.route('/areas')
     def areas():
-        areas = set()
+        areas_set = set()
         for journal in journals:
-            areas.update(journal.areas)
-        return render_template('filter_selection.html', filter_type='areas', filter_list=sorted(areas))
+            areas_set.update(journal.areas)
+        return render_template('filter_selection.html', filter_type='areas', filter_list=sorted(areas_set))
 
     @app.route('/areas/<area>')
     def journals_area(area):
-        page = int(request.args.get('pagina', 1))
+        search_text = request.args.get('q', '').strip().lower()
+        page = int(request.args.get('pagina', 1)) 
         journals_by_area = [j for j in journals if area in j.areas]
+
+        if search_text:
+            journals_by_area = [j for j in journals_by_area if search_text in j.title.lower()]
+
         paginated, total_pages = paginate(journals_by_area, page)
 
         return render_template(
@@ -36,7 +41,8 @@ def create_app(journals):
             filter=area,
             filter_type='areas',
             page=page,
-            total_pages=total_pages
+            total_pages=total_pages,
+            search_text=search_text
         )
 
     @app.route('/catalogos')
@@ -46,19 +52,25 @@ def create_app(journals):
             catalogs_set.update(journal.catalogs)
         return render_template('filter_selection.html', filter_type='catalogs', filter_list=sorted(catalogs_set))
 
-    @app.route('/catalogos/<catalogs>')
-    def journals_catalog(catalogs):
+    @app.route('/catalogos/<catalog>')
+    def journals_catalog(catalog):
+        search_text = request.args.get('q', '').strip().lower()
         page = int(request.args.get('pagina', 1))
-        journals_by_catalog = [j for j in journals if catalogs in j.catalogs]
+        journals_by_catalog = [j for j in journals if catalog in j.catalogs]
+
+        if search_text:
+            journals_by_catalog = [j for j in journals_by_catalog if search_text in j.title.lower()]
+
         paginated, total_pages = paginate(journals_by_catalog, page)
 
         return render_template(
             'filter_results.html',
             journals=paginated,
-            filter=catalogs,
+            filter=catalog,
             filter_type='catalogs',
             page=page,
-            total_pages=total_pages
+            total_pages=total_pages,
+            search_text=search_text
         )
     
     @app.route('/explorar')

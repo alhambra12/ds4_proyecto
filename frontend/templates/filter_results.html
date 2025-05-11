@@ -5,15 +5,24 @@
 {% endblock %}
 
 {% block body %}
-
 <div class="container mt-5">
     {% if filter_type == 'areas' %}
         <h1 class="mb-4">Revistas en el área: <strong>{{ filter }}</strong></h1>
-    {% endif %}
-    {% if filter_type == 'catalogs' %}
+    {% elif filter_type == 'catalogs' %}
         <h1 class="mb-4">Revistas en el catálogo: <strong>{{ filter }}</strong></h1>
     {% endif %}
 
+    <!-- Formulario de búsqueda -->
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Buscar por título..." value="{{ search_text }}">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+
+    {% if search_text %}
+        <p class="mb-4">Mostrando resultados para: <strong>{{ search_text }}</strong></p>
+    {% endif %}
 
     {% if journals %}
     <ul class="list-group">
@@ -37,39 +46,48 @@
 
 {% if total_pages > 1 %}
 <nav aria-label="Paginación" class="mt-4">
-  <ul class="pagination justify-content-center">
+    <ul class="pagination justify-content-center">
+      {% set prev_query = '?pagina=' ~ (page - 1) %}
+      {% set next_query = '?pagina=' ~ (page + 1) %}
+      {% if search_text %}
+          {% set prev_query = prev_query ~ '&q=' ~ search_text %}
+          {% set next_query = next_query ~ '&q=' ~ search_text %}
+      {% endif %}
+      {% if filter_type == 'areas' %}
+          {% set prev_query = '/areas/' ~ filter ~ prev_query %}
+          {% set next_query = '/areas/' ~ filter ~ next_query %}
+      {% elif filter_type == 'catalogs' %}
+          {% set prev_query = '/catalogos/' ~ filter ~ prev_query %}
+          {% set next_query = '/catalogos/' ~ filter ~ next_query %}
+      {% endif %}
 
-    {% if page > 1 %}
-    <li class="page-item">
-      <a class="page-link" href="?pagina={{ page - 1 }}" aria-label="Anterior">
-        &laquo; Anterior
-      </a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-      <span class="page-link">&laquo; Anterior</span>
-    </li>
-    {% endif %}
+        <!-- Anterior -->
+        {% if page > 1 %}
+        <li class="page-item">
+            <a class="page-link" href="{{ prev_query }}" aria-label="Anterior">&laquo; Anterior</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">&laquo; Anterior</span>
+        </li>
+        {% endif %}
 
-    <li class="page-item disabled">
-      <span class="page-link">Página {{ page }} de {{ total_pages }}</span>
-    </li>
+        <!-- Página actual -->
+        <li class="page-item disabled">
+            <span class="page-link">Página {{ page }} de {{ total_pages }}</span>
+        </li>
 
-    {% if page < total_pages %}
-    <li class="page-item">
-      <a class="page-link" href="?pagina={{ page + 1 }}" aria-label="Siguiente">
-        Siguiente &raquo;
-      </a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-      <span class="page-link">Siguiente &raquo;</span>
-    </li>
-    {% endif %}
-
-  </ul>
+        <!-- Siguiente -->
+        {% if page < total_pages %}
+        <li class="page-item">
+            <a class="page-link" href="{{ next_query }}" aria-label="Siguiente">Siguiente &raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Siguiente &raquo;</span>
+        </li>
+        {% endif %}
+    </ul>
 </nav>
 {% endif %}
-
-
 {% endblock %}
