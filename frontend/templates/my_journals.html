@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Journal Jar - Mis revistas{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">Mis revistas guardadas</h1>
+
+    {% if journals %}
+        <ul class="list-group">
+            {% for journal in journals %}
+                <li class="list-group-item">
+                    <h5>{{ journal.title }}</h5>
+                    <p>
+                        <a href="/revistas/{{journal.id}}" class="btn btn-info">Ver detalles</a>
+                    </p>
+                    <p>
+                        <a href="/eliminar/{{journal.id}}" class="btn btn-danger"
+                        onclick="return confirm('¿Estás seguro de que quieres eliminar esta revista?');">
+                            Eliminar
+                        </a>
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No has guardado ninguna revista todavía.</p>
+    {% endif %}
+</div>
+{% endblock %}

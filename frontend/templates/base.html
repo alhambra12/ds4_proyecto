@@ -23,7 +23,7 @@
                         <img src="{{ url_for('static', filename='images/journaljar_bw_logo.png') }}" alt="Jounal Jar logo" height="40" class="inverted-color">
             </a>
             <a href="/" class="navbar-brand">
-                        <img src="{{ url_for('static', filename='images/journaljar_bw_wordmark.png') }}" alt="Jounal Jar logo" height="40" class="inverted-color">
+                        <img src="{{ url_for('static', filename='images/journaljar_bw_wordmark.png') }}" alt="Jounal Jar logo" height="30" class="inverted-color">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
                     data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
@@ -47,16 +47,33 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.path.startswith('/busqueda') %}active fw-bold{% endif %}" href="/busqueda">Búsqueda</a>
                     </li>
+                    {% if session.get('logged_in') %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path.startswith('/misrevistas') %}active fw-bold{% endif %}" href="/misrevistas">Mis revistas</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path.startswith('/creditos') %}active fw-bold{% endif %}" href="/creditos">Créditos</a>
                     </li>
                 </ul>
+
+                <ul class="navbar-nav ms-auto">
+                    {% if session.get('logged_in') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/salir">Cerrar sesión</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path.startswith('/iniciar') %}active fw-bold{% endif %}" href="/iniciar">Iniciar sesión</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="https://www.unison.mx" target="_blank" class="nav-link">
+                            <img src="{{ url_for('static', filename='images/unison_bw_wordmark.png') }}" alt="Unison wordmark" height="30" class="inverted-color">
+                        </a>
+                    </li>
+                </ul>
                 
-                <div class="d-flex">
-                    <a href="https://www.unison.mx" target="_blank" class="navbar-brand">
-                        <img src="{{ url_for('static', filename='images/unison_bw_wordmark.png') }}" alt="Unison wordmark" height="40" class="inverted-color">
-                    </a>
-                </div>
             </div>
         </div>
     </nav>

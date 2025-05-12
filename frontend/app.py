@@ -4,21 +4,32 @@ import os, argparse
 from journal_update import check_last_visit
 from journal_json import gen_journal_json
 from functions import load_journals, check_path, paginate, get_authors, get_search_results
-from flask import Flask, render_template, request
+from users import delete_saved_journal, load_users, verify_user, register_user, save_journal_for_user, get_saved_journals, define_json_path
+from flask import Flask, render_template, request, session, flash, redirect, url_for
 
-def create_app(journals, journals_json_path):
+def create_app(journals, journals_json_path, users):
     app = Flask(__name__)
+    app.secret_key = os.urandom(24)
 
     @app.route('/')
     def index():
-        return render_template('index.html')
+        username = session.get('username')
+        return render_template('index.html', username=username)
 
-    @app.route('/revistas/<id_journal>')
+    @app.route('/revistas/<id_journal>', methods=['GET', 'POST'])
     def journal(id_journal):
         journal = next((j for j in journals if j.id == id_journal), None)
+        if request.method == 'POST':
+            if not session.get('logged_in'):
+                flash('Debes tener una sesion iniciada para guarda revista.', 'warning')
+                return redirect(url_for('login'))
+
+            username = session['username']
+            save_journal_for_user(username, id_journal, users)
+            flash('Revista guardada.', 'success')
+
         check_last_visit(journal, journals, journals_json_path)
         return render_template('journal.html', journal=journal)
-
 
     @app.route('/areas')
     def areas():
@@ -125,6 +136,63 @@ def create_app(journals, journals_json_path):
     def credits():
         authors = get_authors()
         return render_template('credits.html', authors=authors)
+    
+    @app.route('/iniciar', methods=['GET', 'POST'])
+    def login():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            if verify_user(username, password, users):
+                session['logged_in'] = True
+                session['username'] = username
+                return redirect(url_for('index'))
+            else:
+                flash('Usuario o contraseña invalido.', 'danger')
+        return render_template('login.html')
+    
+    @app.route('/registrarse', methods=['GET', 'POST'])
+    def register():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            if register_user(username, password, users):
+                flash('Registro satisfactorio.', 'success')
+                return redirect(url_for('login'))
+            else:
+                flash('El usuario ya existe.', 'danger')
+        return render_template('register.html')
+
+    @app.route('/salir')
+    def logout():
+        session.clear()
+        flash('Tu sesion ha cerrado.', 'info')
+        return redirect(url_for('index'))
+
+    @app.route('/misrevistas')
+    def my_journals():
+        if not session.get('logged_in'):
+            flash('Debes de tener una sesion iniciada.', 'warning')
+            return redirect(url_for('login'))
+
+        username = session['username']
+        saved_ids = get_saved_journals(username, users)
+        saved = [j for j in journals if j.id in saved_ids]
+
+        return render_template('my_journals.html', journals=saved)
+    
+    @app.route('/eliminar/<journal_id>')
+    def delete_journal(journal_id):
+        if not session.get('logged_in'):
+            flash('Debes iniciar sesión.', 'warning')
+            return redirect(url_for('login'))
+
+        username = session['username']
+        if delete_saved_journal(username, journal_id):
+            flash('Revista eliminada de tu lista.', 'success')
+        else:
+            flash('No se pudo eliminar la revista.', 'danger')
+
+        return redirect(url_for('my_journals'))
 
     return app
 
@@ -150,7 +218,9 @@ def main(json_dir_path, unison_json_filename, scimago_json_filename):
     journals = load_journals(journals_json_path)
 
     print('\nIniciando app Flask.\n')
-    app = create_app(journals, journals_json_path)
+    define_json_path(json_dir_path)
+    users = load_users()
+    app = create_app(journals, journals_json_path, users)
     app.run(debug=True) 
 
 if __name__ == '__main__':
