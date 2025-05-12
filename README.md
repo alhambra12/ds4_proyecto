@@ -1,6 +1,6 @@
 # DS4 Proyecto
 
-Para ejecutar cualquiera de los siguientes comandas, se tiene que estar en el directorio de DS4_proyecto.
+Para ejecutar cualquiera de los siguientes comandos, se tiene que estar en el directorio de ds4_proyecto.
 
 ## Integrantes
 
@@ -9,6 +9,7 @@ Para ejecutar cualquiera de los siguientes comandas, se tiene que estar en el di
 | Pedro Alan Escobedo Salazar  | 221218948       |
 | Alex Antonio Pacheco Becerra | 223218046       |
 | Alejandro Leyva Sauceda      | 223219885       |
+
 ## Declaracion sobre uso de IA
 
 Se utilizo IA para la realizacion del proyecto.
@@ -18,7 +19,7 @@ Se utilizo IA para la realizacion del proyecto.
 Este archivo permite ejecutar cada programa desde la consola.
 
 ```
-python project.py
+python proyecto.py
 ```
 
 ## Ejecutar desde el app.py de cada programa
