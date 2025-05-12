@@ -12,7 +12,7 @@ Para ejecutar cualquiera de los siguientes comandos, se tiene que estar en el di
 
 ## Declaracion sobre uso de IA
 
-Se utilizo IA para la realizacion del proyecto.
+Se utilizo IA para la realización del proyecto. (Github Copilot y ChatGPT)
 
 ## Ejecutar desde proyecto.py
 
