@@ -2,6 +2,17 @@
 
 Para ejecutar cualquiera de los siguientes comandas, se tiene que estar en el directorio de DS4_proyecto.
 
+## Integrantes
+
+| Nombre                       | Num. Expediente |
+| ---------------------------- | --------------- |
+| Pedro Alan Escobedo Salazar  | 221218948       |
+| Alex Antonio Pacheco Becerra | 223218046       |
+| Alejandro Leyva Sauceda      | 223219885       |
+## Declaracion sobre uso de IA
+
+Se utilizo IA para la realizacion del proyecto.
+
 ## Ejecutar desde proyecto.py
 
 Este archivo permite ejecutar cada programa desde la consola.
